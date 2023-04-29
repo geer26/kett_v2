@@ -1,0 +1,9 @@
+FROM python:3.9.16-alpine3.16
+MAINTAINER Gergo Kurucz "gergo.kurucz@mobilegap.com"
+RUN apk update && apk add --no-cache g++ make libffi-dev musl-dev
+RUN mkdir -p /kett_backend
+WORKDIR /kett_backend
+COPY requirements.txt /kett_backend
+RUN pip3 install --upgrade pip && pip3 install -r requirements.txt --no-cache-dir && pip3 install https://github.com/eventlet/eventlet/archive/master.zip
+RUN pip install --upgrade pip wheel setuptools requests
+ENTRYPOINT gunicorn --worker-class gevent -w 4 gkett:app -b 0.0.0.0:5001
