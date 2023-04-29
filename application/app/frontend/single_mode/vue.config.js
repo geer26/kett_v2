@@ -4,9 +4,9 @@ const { defineConfig } = require('@vue/cli-service')
 //UNCOMMENT ON COMPILE
 /*
 module.exports = defineConfig({
-    publicPath: '../../static/dist',
-    outputDir: '../../static/dist',
-    indexPath: '../templates/single_vue.html',
+    publicPath: '../../static/single_dist',
+    outputDir: '../../static/single_dist',
+    indexPath: '../../templates/single_vue.html',
 
     configureWebpack: {
       devServer: {

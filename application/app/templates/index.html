@@ -14,13 +14,32 @@
 
 <body>
     <div id="content">
-        <div id="welcome_modal" class="welcome-modal">
 
-            <h4>KETT</h4>
+        <div class="welcome-modal">
 
-            <div id="cos_button_container" class="button-container" onmouseover="showCosPanel()" onmouseleave="hideCosPanel()">
-                <a class="waves-effect waves-light btn">MAIN STAFF</a>
-                <div id="cos_form_container" class="form-container" hidden>
+            <h4>SINGLE MODE</h4>
+
+            <div class="button-container">
+                <a class="waves-effect waves-light btn" href="/single">ENTER</a>
+            </div>
+
+        </div>
+
+        <div class="welcome-modal">
+
+            <h4>SUPERVISED MODE</h4>
+
+            <div class="button-container">
+                <a class="waves-effect waves-light btn" href="#">ENTER</a>
+            </div>
+
+        </div>
+
+        <div class="welcome-modal">
+
+            <h4>SUPERVISOR</h4>
+
+            <div id="cos_form_container" class="form-container">
                     <div class="input-field col s6">
                         <input id="uname" type="text" class="validate">
                         <label for="uname">Username</label>
@@ -30,13 +49,11 @@
                         <label for="passw">Paswword</label>
                     </div>
                 </div>
-            </div>
 
-            <div id="single_button_container" class="button-container">
-                <a class="waves-effect waves-light btn" href="/single">SINGLE MODE</a>
-            </div>
+            <a class="waves-effect waves-light btn">ENTER</a>
 
         </div>
+
     </div>
 </body>
 

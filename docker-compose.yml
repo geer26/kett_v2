@@ -21,7 +21,6 @@ services:
       - ./proxy/def_conf/:/etc/nginx/sites-enabled/:ro
       - ./proxy/logs/:/var/log/nginx
       - ./proxy/certs:/certs:ro
-      #- ./backend/web_interface/static:/static:ro
 
     depends_on:
       - kett_backend

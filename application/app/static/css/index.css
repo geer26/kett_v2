@@ -22,22 +22,28 @@
     body {
         background-size: auto;
     }
+
+    #content{
+        position: absolute;
+        padding: 10px;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        overflow: auto;
+    }
+
     .welcome-modal {
-        width: 80%;
-        max-height: 80%;
+        width: 70%;
+        max-height: 50%;
     }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-    body {
-        background-size: auto;
-    }
-    .welcome-modal {
-        width: 80%;
-        max-height: 80%;
-    }
-}
+@media only screen and (min-width: 600px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {}
@@ -89,9 +95,10 @@ body{
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    overflow: hidden;
 }
 
 
@@ -100,6 +107,8 @@ body{
     background-color: var(--dark_gray_70);
     border-radius: 5px;
     padding: 10px;
+    margin: 30px;
+    max-width: 20%;
     box-shadow: var(--yellow_shadow);
     backdrop-filter: blur(3px);
 
@@ -107,6 +116,11 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+
+.welcome-modal h4{
+    text-align: center;
 }
 
 
