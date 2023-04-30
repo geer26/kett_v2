@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
         return f'Username: {self.username}, ID: {self.id}'
 
     def set_password(self, password):
-        salt = bcrypt.gensalt(14)
+        salt = bcrypt.gensalt(32)
         p_bytes = password.encode()
         pw_hash = bcrypt.hashpw(p_bytes, salt)
         self.password_hash = pw_hash.decode()
@@ -49,54 +49,6 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'created_at': self.created_at.strftime("%m/%d/%Y, %H:%M:%S"),
             'is_superuser': self.is_superuser
-        }
-
-
-class Event(db.Model):
-    id = db.Column(db.Integer, index=True, primary_key=True)
-    description = db.Column(db.String(256), default='No description')
-    short_name = db.Column(db.String(32), default='No name')
-    created_at = db.Column(db.Date(), default=datetime.now(), nullable=False)
-    workouts = db.Column(db.String(), default='')
-    sequence = db.Column(db.String(), default='')
-    ident = db.Column(db.String(6), nullable=False)
-    closed = db.Column(db.Boolean, default=False)
-    named = db.Column(db.Integer, default=0)
-
-    # -------- Connections
-    # -------- FK
-    user = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    # -------- BACKREF
-    # competitors = db.relationship('Competitor', backref='event', lazy='dynamic', cascade="all, delete-orphan")
-
-    def __init__(self):
-        self.ident = self.gen_ident()
-
-    def __repr__(self):
-        return f'id: {self.id}, ident: {self.ident}, user: {self.user}'
-
-    def gen_ident(self):
-        uid = str(uuid.uuid1()).split('-')[3]
-        ts = str(datetime.now().timestamp()).encode()
-        ts_hash = bcrypt.hashpw(ts, bcrypt.gensalt()).decode()[51:53]
-        self.ident = uid + ts_hash
-        return str(uid + ts_hash)
-
-    def get_ident(self):
-        return str(self.ident)
-
-    def get_self_json(self):
-        return {
-            'id': self.id,
-            'name': self.short_name,
-            'description': self.description,
-            'workouts': self.workouts,
-            'sequence': self.sequence,
-            'created_at': self.created_at.strftime("%m/%d/%Y, %H:%M:%S"),
-            'closed': self.closed,
-            'ident': self.ident,
-            'named': self.named
         }
 
 

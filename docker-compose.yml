@@ -3,29 +3,29 @@ services:
 
 #< ----------------------- >
 
-  proxy:
+#  proxy:
 
-    container_name: kett_proxy
+#    container_name: kett_proxy
 
-    hostname: kett_proxy
+#    hostname: kett_proxy
 
-    build: ./proxy/.
+#    build: ./proxy/.
 
-    ports:
-      - "80:80" # port for apis
-      - "32662:32662"
+#    ports:
+#      - "80:80" # port for apis
+#      - "443:443"
 
-    volumes:
-      - ./proxy/conf/:/etc/nginx/conf.d
-      - ./proxy/def_conf/:/etc/nginx/sites-available/:ro
-      - ./proxy/def_conf/:/etc/nginx/sites-enabled/:ro
-      - ./proxy/logs/:/var/log/nginx
-      - ./proxy/certs:/certs:ro
+#    volumes:
+#      - ./proxy/conf/:/etc/nginx/conf.d
+#      - ./proxy/def_conf/:/etc/nginx/sites-available/:ro
+#      - ./proxy/def_conf/:/etc/nginx/sites-enabled/:ro
+#      - ./proxy/logs/:/var/log/nginx
+#      - ./proxy/certs:/certs:ro
 
-    depends_on:
-      - kett_backend
+#    depends_on:
+#      - kett_backend
 
-    restart: always
+#    restart: always
 
 #< ----------------------- >
 
@@ -40,7 +40,7 @@ services:
     volumes:
       - ./application/:/kett_backend/:rw
 
-    #environment:
+      #environment:
       ## DEBUG
       #- DJANGO_DEBUG=${DJANGO_DEBUG}
       #- AUTH_OFF=${AUTH_OFF}
@@ -63,8 +63,8 @@ services:
       #- DJANGO_STATIC_SETTINGS_COLLETCTION=${DJANGO_STATIC_SETTINGS_COLLETCTION}
 
 
-#    ports: # keep commented in production!
-#      - "8000:5001" # keep commented in production!
+    ports: # keep commented in production!
+      - "8000:5001" # keep commented in production!
 
     restart: always
 

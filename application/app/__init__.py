@@ -21,7 +21,7 @@ login = LoginManager(app)
 
 #app.register_blueprint(single_mode, url_prefix='/single')
 
-socketio = SocketIO(app)
+socket = SocketIO(app)
 
 from app import models
 from app.routes import *

@@ -1,2 +1,4 @@
 /venv/
 /application/app/frontend/single_mode/node_modules/
+/application/app.db
+/application/migrations/
