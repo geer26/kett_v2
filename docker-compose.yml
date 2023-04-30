@@ -63,8 +63,8 @@ services:
       #- DJANGO_STATIC_SETTINGS_COLLETCTION=${DJANGO_STATIC_SETTINGS_COLLETCTION}
 
 
-    ports: # keep commented in production!
-      - "8000:5001" # keep commented in production!
+#    ports: # keep commented in production!
+#      - "8000:5001" # keep commented in production!
 
     restart: always
 

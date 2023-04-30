@@ -23,38 +23,36 @@
         background-size: auto;
     }
 
-    #content{
-        position: absolute;
-        padding: 10px;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+    .content{
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
         overflow: auto;
     }
 
     .welcome-modal {
         width: 70%;
-        max-height: 50%;
+        height: 50%;
     }
 }
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
     body {
         background-size: cover;
     }
+
+    .content{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
     .welcome-modal {
-        width: 30%;
+        max-width: 20%;
         max-height: 80%;
     }
 }
@@ -88,17 +86,12 @@ body{
 }
 
 
-#content{
+.content{
     position: absolute;
     padding: 10px;
     margin: 0;
     height: 100%;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
 }
 
 
@@ -108,10 +101,8 @@ body{
     border-radius: 5px;
     padding: 10px;
     margin: 30px;
-    max-width: 20%;
     box-shadow: var(--yellow_shadow);
     backdrop-filter: blur(3px);
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -121,6 +112,7 @@ body{
 
 .welcome-modal h4{
     text-align: center;
+    display: block;
 }
 
 
