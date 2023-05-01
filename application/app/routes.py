@@ -8,9 +8,24 @@ from app.models import User, Workout
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for(supervisor_mode))
+        return redirect(url_for('supervisor_mode'))
     if not current_user.is_authenticated and request.method == 'POST':
-        pass
+
+        if request.form['uname'] and request.form['passw']:
+            user = User.query.filter_by(username=request.form['uname']).first()
+
+            if not user or not user.check_password(request.form['passw']):
+                print('LOGIN FAILED!')
+                return redirect(url_for('index'))
+
+            else:
+                login_user(user)
+                return redirect(url_for('supervisor_mode'))
+
+        else:
+            print('MISSING LOGIN DATA!')
+            return redirect(url_for('index'))
+
     return render_template('index.html')
 
 
