@@ -105,7 +105,7 @@ data(){return{
 
 
 .unselected_text{
-    color: var(--light_gray_70);
+    color: var(--light_gray_40);
 }
 
 .orang_selected{
