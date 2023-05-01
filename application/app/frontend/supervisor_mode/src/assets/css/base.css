@@ -5,6 +5,7 @@
     --light_gray_70: rgba(227, 227, 227,.7);
     --yellow: #e6ee9c;
     --orang: #e8a13f;
+    --blu: rgb(112, 147, 187);
     --yellow_70: rgba(230,238,156,.7);
     --yellow_40: rgba(230,238,156,.4);
     --green: #216822;
@@ -119,6 +120,7 @@ body{
     text-transform: uppercase;
     transform: .2s ease;
     cursor: pointer;
+    width: fit-content;
 }
 
 .btn p{
@@ -146,7 +148,12 @@ body{
 
 .orange_btn{
     background-color: var(--orang);
-    color: var(--light_gray);
+    color: var(--dark_gray);
+}
+
+.blue_btn{
+    background-color: var(--blu);
+    color: var(--dark_gray);
 }
 
 
