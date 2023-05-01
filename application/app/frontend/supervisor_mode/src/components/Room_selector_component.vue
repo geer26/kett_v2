@@ -3,21 +3,21 @@
         
         <div class="modal">
             
-            <h1>ROOM</h1>
+            <h1 style="margin: 5px;">EVENT</h1>
             
             <input type="text" v-model="this.room" class="room_input">
             
             <div class="room_selection">
-                <a :class="{orang_selected : !this.new_room}" class="unselected_text">REJOIN</a>
+                <a :class="{orang_selected : !this.new_room}" class="unselected_text" @click="this.new_room=false">REJOIN</a>
                 <label class="switch">
                     <input type="checkbox" v-model="this.new_room">
                     <span class="slider round"></span>
                 </label>
-                <a :class="{blu_selected : this.new_room}" class="unselected_text">CREATE</a>
+                <a :class="{blu_selected : this.new_room}" class="unselected_text" @click="this.new_room=true">CREATE</a>
             </div>
 
-            <a class="btn blue_btn" v-if="this.new_room">CREATE NEW</a>
-            <a class="btn orange_btn" v-if="!this.new_room">JOIN</a>
+            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.connect">CREATE</a>
+            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.connect">JOIN</a>
         
         </div>
 
@@ -33,10 +33,16 @@ props: {
   
 },
 
+methods: {
+  connect(){
+    this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+  }
+},
+
 data(){return{
     room: "",
     new_room: true,
-}}
+}},
 
 }
 
@@ -74,7 +80,7 @@ data(){return{
         border-radius: 5px;
         font-size: 1rem;
         font-weight: 500;
-        width: 60%;
+        width: 70%;
         max-height: 6vh;
         background-color: var(--light_gray);
         color: var(--dark_gray);
