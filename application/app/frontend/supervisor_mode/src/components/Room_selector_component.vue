@@ -8,7 +8,7 @@
             <input type="text" v-model="this.room" class="room_input">
             
             <div class="room_selection">
-                <a :class="{orang_selected : !this.new_room}" class="unselected_text" @click="this.new_room=false">REJOIN</a>
+                <a :class="{orang_selected : !this.new_room}" class="unselected_text" @click="this.new_room=false">JOIN</a>
                 <label class="switch">
                     <input type="checkbox" v-model="this.new_room">
                     <span class="slider round"></span>

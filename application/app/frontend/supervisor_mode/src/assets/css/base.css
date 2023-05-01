@@ -83,18 +83,10 @@ body{
     text-align: center;
     color: var(--light_gray);
 
-    /*border: 5px solid rgb(206, 156, 20);*/
-
-    display: grid;
-
-    grid-template-columns: 4fr 1fr;
-    grid-template-rows: 1fr 1fr;
-
-    justify-content: space-evenly;
-    grid-template-areas:
-        "counter_upper info_upper"
-        "counter_lower info_lower";
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 

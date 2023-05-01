@@ -2,7 +2,30 @@
 
   <Room_selector v-if="!this.connected" @connect_to_room="this.connect_to_room"/>
 
-  <div></div>
+  <div class="main_container">
+
+    <div class="station_table_container">STATION TABLE</div>
+
+    <div class="control_panel_container">
+
+      <div class="select_workout_container">
+        <select name="select" id="" style="width:50%">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      </div>
+
+      <div class="start_button_container"><a class="btn green_btn" style="width:50%;">START</a></div>
+
+      <div class="timer_container"><p class="red_text">TIME</p></div>
+
+      
+      
+      
+
+    </div>
+  </div>
 
 </template>
 
@@ -35,4 +58,79 @@ export default {
 </script>
 
 <style>
+
+.main_container{
+  position: relative;
+  height: 99%;
+  width: 99%;
+  
+  display: grid;
+
+  grid-template-columns: 1fr;
+  grid-template-rows: 6fr 1fr;
+
+  justify-content: space-evenly;
+  grid-template-areas:
+        "station_table"
+        "control_panel";
+  
+}
+
+.station_table_container{
+  grid-area: station_table;
+  border: 2px solid red;
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.control_panel_container{
+  grid-area: control_panel;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  /*
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  justify-content: space-evenly;
+  grid-template-areas:
+        "select_workout start_button timer";
+}
+
+.select_workout_container{
+  border: 2px solid red;
+  grid-area: select_workout;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.start_button_container{
+  border: 2px solid red;
+  grid_area: start_button;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer_container{
+  border: 2px solid red;
+  grid-area: timer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>
