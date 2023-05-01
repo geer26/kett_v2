@@ -15,7 +15,6 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     salt = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.Date(), default=datetime.now(), nullable=False)
     is_superuser = db.Column(db.Boolean, nullable=False, default=False)
 
     # -------- Connections
@@ -29,7 +28,7 @@ class User(UserMixin, db.Model):
         return f'Username: {self.username}, ID: {self.id}'
 
     def set_password(self, password):
-        salt = bcrypt.gensalt(32)
+        salt = bcrypt.gensalt(14)
         p_bytes = password.encode()
         pw_hash = bcrypt.hashpw(p_bytes, salt)
         self.password_hash = pw_hash.decode()
@@ -47,7 +46,6 @@ class User(UserMixin, db.Model):
         return {
             'id': self.id,
             'username': self.username,
-            'created_at': self.created_at.strftime("%m/%d/%Y, %H:%M:%S"),
             'is_superuser': self.is_superuser
         }
 

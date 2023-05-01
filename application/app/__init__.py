@@ -19,12 +19,11 @@ migrate = Migrate(app, db)
 
 login = LoginManager(app)
 
-#app.register_blueprint(single_mode, url_prefix='/single')
-
 socket = SocketIO(app)
+socket.init_app(app, cors_allowed_origins="*")
 
 from app import models
 from app.routes import *
 
-print("APP RUNNING")
+
 os.system(f"echo 'APP RUNNING'")

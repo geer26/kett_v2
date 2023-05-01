@@ -40,6 +40,8 @@ services:
     volumes:
       - ./application/:/kett_backend/:rw
 
+    command: /bin/sh -c "flask db init && flask db migrate"
+
       #environment:
       ## DEBUG
       #- DJANGO_DEBUG=${DJANGO_DEBUG}
