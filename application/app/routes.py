@@ -43,7 +43,7 @@ def single_mode():
 @app.route('/supervisor/')
 @login_required
 def supervisor_mode():
-    return render_template('supervisor.html')
+    return render_template('supervisor_vue.html')
 
 
 @app.route('/adduser/<username>/<password>')
