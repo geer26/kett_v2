@@ -1,6 +1,7 @@
 <template>
 
   <Room_selector v-if="!this.connected" @connect_to_room="this.connect_to_room"/>
+  <Spinner_component v-if="this.loading" class="spinner"/>
 
   <div class="main_container">
 
@@ -32,13 +33,15 @@
 <script>
 
 import Room_selector from './components/Room_selector_component.vue'
+import Spinner_component from "./components/Spinner_component.vue"
 
 export default {
 
   name: 'App',
 
   components: {
-    Room_selector
+    Room_selector,
+    Spinner_component,
   },
 
   methods: {
@@ -52,6 +55,7 @@ export default {
   data(){return{
     room: null,
     connected: false,
+    loading: false,
   }}
 
 }
@@ -74,6 +78,19 @@ export default {
         "station_table"
         "control_panel";
   
+}
+
+.spinner{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .station_table_container{
