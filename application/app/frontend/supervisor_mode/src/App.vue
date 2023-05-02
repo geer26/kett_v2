@@ -10,7 +10,7 @@
     <div class="control_panel_container">
 
       <div class="select_workout_container">
-        <select name="select" id="" style="width:50%">
+        <select name="select" id="" class="select_box">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -130,6 +130,20 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+
+.select_box{
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  width: 50%;
+  max-height: 6vh;
+  background-color: var(--light_gray);
+  color: var(--dark_gray);
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
 }
 
 .start_button_container{
