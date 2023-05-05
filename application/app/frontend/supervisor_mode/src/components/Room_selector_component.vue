@@ -1,7 +1,7 @@
 <template>
     <div class="modal_background">
         
-        <div class="modal">
+        <div class="modal glassmorphism_gray">
             
             <h1 style="margin: 5px;">EVENT</h1>
             
@@ -67,9 +67,9 @@ data(){return{
     position: relative;
     max-width: 30%;
     padding: 10px;
-    background-color: var(--dark_gray_70);
+    /*background-color: var(--dark_gray_70);
     border-radius: 5px;
-    box-shadow: var(--yellow_shadow);
+    box-shadow: var(--yellow_shadow);*/
     display:flex;
     flex-direction: column;
     justify-content: center;

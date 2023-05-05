@@ -1,11 +1,16 @@
 <template>
 
   <Room_selector v-if="!this.connected" @connect_to_room="this.connect_to_room"/>
+
   <Spinner_component v-if="this.loading" class="spinner"/>
 
   <div class="main_container">
 
-    <div class="station_table_container">STATION TABLE</div>
+    <div class="station_table_container">
+      STATION TABLE
+      <ConnectionState/>
+      <ConnectionManager/>
+    </div>
 
     <div class="control_panel_container">
 
@@ -34,6 +39,9 @@
 
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from "./components/Spinner_component.vue"
+import ConnectionState from './components/Connectionstate.vue'
+import ConnectionManager from './components/ConnectionManager.vue'
+import { socket, state } from "@/socket"
 
 export default {
 
@@ -42,12 +50,15 @@ export default {
   components: {
     Room_selector,
     Spinner_component,
+    ConnectionState,
+    ConnectionManager,
   },
 
   methods: {
     connect_to_room(data){
       // TODO try connection
       data
+      console.log("DATA AT CONNECTION: " + data.new_room + " - " + data.room_name)
       this.connected = true
     }
   },
@@ -56,6 +67,8 @@ export default {
     room: null,
     connected: false,
     loading: false,
+    socket: socket,
+    state: state
   }}
 
 }

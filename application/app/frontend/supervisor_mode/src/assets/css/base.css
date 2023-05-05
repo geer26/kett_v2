@@ -42,6 +42,24 @@
 }
 
 
+.glassmorphism {
+    background-color:  rgba( 230,238,156, 0.3); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 5px;
+    border: 1px solid rgba( 230,238,156, 0.3); 
+  }
+
+
+
+  .glassmorphism_gray {
+    background-color:  rgba( 228,226,226, 0.2); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 5px;
+    border: 1px solid rgba( 228,226,226, 0.2); 
+  }
+
 
 body{
     width: 100vw;
