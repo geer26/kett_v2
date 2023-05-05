@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from flask_socketio import send, emit
 from app import app, socket, db
 
-from roomhandler import Room, RoomMate
+from .roomhandler import Room, RoomMate
 
 from app.models import User, Workout
 

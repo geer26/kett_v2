@@ -1,1 +1,1 @@
-from room import RoomMate, Room
+from .room import RoomMate, Room

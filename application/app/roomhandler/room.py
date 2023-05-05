@@ -15,4 +15,4 @@ class Room:
         self.room_mates: List = [self.room_supervisor]
 
     def mate_connect(self):
-        if
+        pass
