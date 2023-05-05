@@ -27,13 +27,26 @@
             v-if="this.workout.name == 'CUSTOM'"
             @keyup="this.select_timed">
 
+            <datalist id="custominput">
+                <option value="OAJ"></option>
+                <option value="TAJ"></option>
+                <option value="OALC"></option>
+                <option value="TALC"></option>   
+                <option value="OAS"></option>
+                <option value="TAS"></option>
+                <option value="OAHS"></option>
+                <option value="TAHS"></option>          
+            </datalist>
+
             <p class="sidebar_label"
             v-if="['3 MINUTES', '5 MINUTES', '10 MINUTES', '30 MINUTES', 'CUSTOM'].includes(this.workout.name)">
             Exercise name
             </p>
-            <input type="text" class="competitor_name_input" v-model="this.workout.workout[1].exercise"
+            <input type="text" class="competitor_name_input"
+            v-model="this.workout.workout[1].exercise"
             v-if="['3 MINUTES', '5 MINUTES', '10 MINUTES', '30 MINUTES', 'CUSTOM'].includes(this.workout.name)"
-            @keyup="this.select_timed">
+            @keyup="this.select_timed"
+            list="custominput">
 
         </div>
 
