@@ -40,6 +40,11 @@
 }
 
 
+@font-face {
+    font-family: seven-segments;
+    src: url(../fonts/Seven\ Segment.ttf);
+}
+
 
 body{
     width: 100vw;
@@ -51,6 +56,26 @@ body{
     margin: 0;
     overflow: hidden;
 }
+
+
+.glassmorphism {
+    background-color:  rgba( 230,238,156, 0.3); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 5px;
+    border: 1px solid rgba( 230,238,156, 0.3); 
+  }
+
+
+
+  .glassmorphism_gray {
+    background-color:  rgba( 228,226,226, 0.2); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 5px;
+    border: 1px solid rgba( 228,226,226, 0.2); 
+  }
+
 
 
 #app{
@@ -75,6 +100,7 @@ body{
     user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 
     font-family: istok;
+    /*font-family: seven-segments;*/
     font-weight: 600;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -86,11 +112,12 @@ body{
     display: grid;
 
     grid-template-columns: 4fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 5fr 1fr 5fr;
 
     justify-content: space-evenly;
     grid-template-areas:
         "counter_upper info_upper"
+        "labels labels"
         "counter_lower info_lower";
 
 }

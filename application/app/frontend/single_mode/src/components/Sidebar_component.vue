@@ -1,9 +1,9 @@
 <template>
 
-    <div class="sidebar">
+    <div class="sidebar glassmorphism_gray">
 
         <div class="switch_holder">
-            <p class="sidebar_label">Select ID</p>
+            <p class="sidebar_label">Name</p>
             <input type="text" class="competitor_name_input" @keyup="this.change_id" v-model="this.id">
         </div>
 
@@ -144,9 +144,9 @@ export default {
         left: -14%;
         height: 100vh;
         width: 15%;
-        backdrop-filter: blur(2px);
+        /*backdrop-filter: blur(2px);
         background-image: linear-gradient(to right, rgba(0,0,0,0),rgba(0,0,0,0),
-        rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),var(--yellow_40));
+        rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,0),var(--yellow_40));*/
         transition: .4s ease;
         z-index: 1;
         display: flex;

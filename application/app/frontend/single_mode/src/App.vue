@@ -52,10 +52,7 @@
       
     </div>
 
-    <div
-      class="counter_lower" 
-      @click="this.inc_reps"
-      @contextmenu.prevent="this.dec_reps">
+    <div class="labels">
 
       <div class="time_label">
         <p>TIME</p>
@@ -64,6 +61,13 @@
       <div class="workout_label">
         <p>{{ this.exercise }}</p>
       </div>
+
+    </div>
+
+    <div
+      class="counter_lower" 
+      @click="this.inc_reps"
+      @contextmenu.prevent="this.dec_reps">
 
       <Timer_component :time="this.time" class="time-counter" ref="timer"/>
 
@@ -81,7 +85,7 @@
         </p>
         <img src="./assets/img/arrow_down.png" alt="DOWNARROW" v-if="this.show_weight_adjust" class="pointered kb_image"
         @click="this.dec_weight"/>
-    
+      
     </div>
 
 
@@ -120,7 +124,7 @@ export default {
       this.max_reps = 32000
       this.maxed = false
       this.exercise = "---"
-      this.time = "-:-:-"
+      this.time = 0
       this.workout = null
       this.name = ""
       this.result = {}
@@ -137,7 +141,7 @@ export default {
       this.max_reps = 32000
       this.maxed = false
       this.exercise = "---"
-      this.time = "-:-:-"
+      this.time = 0
       this.workout = null
       this.index = -1
       this.timer = null
@@ -238,7 +242,7 @@ export default {
             //!!!SAVE RESULT!!!
             res.reps = this.reps
             // Időzítést töröljük - ez fontos!
-            this.time = "-:-:-"
+            this.time = 0
             clearInterval(this.timer)
             if (this.state == "WORK"){this.result.results.push(res)}
             this.next();
@@ -247,14 +251,14 @@ export default {
     },
 
     inc_weight(){
-      if (this.weight <= 44){
-        this.weight += 4
+      if (this.weight <= 46){
+        this.weight += 2
       }
     },
 
     dec_weight(){
-      if (this.weight >= 12){
-        this.weight -= 4
+      if (this.weight >= 4){
+        this.weight -= 2
       }
     },
 
@@ -271,7 +275,7 @@ export default {
     max_reps: 32000,
     maxed: false,
     exercise: "---",
-    time: "-:-:-",
+    time: 0,
     workout: null,
     result: {},
     name: "",
@@ -318,16 +322,28 @@ export default {
     width: 50%;
 }
 
+.labels{
+  grid-area: labels;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  /*max-height: 10%;*/
+}
+
 .counter_lower{
     grid-area: counter_lower;
     text-align: center;
     position: relative;
-    top: -5%;
     display: flex;
     flex-direction:column;
     justify-content: center;
     align-items: center;
     max-height: 100%;
+    margin: 0;
 }
 
 .time-counter{
@@ -345,6 +361,7 @@ export default {
     flex-direction:column;
     justify-content: center;
     align-items: center;
+    margin: 0;
 }
 
 .rep_label{
@@ -352,7 +369,7 @@ export default {
   position: absolute;
   top: 10%;
   left: 20%;
-  padding: 10px;
+  padding: 0;
 }
 
 .rep_label p{
@@ -377,26 +394,32 @@ export default {
   color: var(--yellow);
   position: absolute;
   top: 0;
-  left: 20%;
-  padding: 10px;
+  left: 16%;
+  padding: 0;
 }
 
 .time_label p{
   font-size: 3vw;
   text-shadow: 0px 0px 3px var(--yellow);
+  padding: 0;
+  margin: 0;
 }
 
 .workout_label{
   color: var(--red);
-  position: absolute;
-  top: -25%;
-  left: 50%;
-  padding: 10px;
+  position: relative;
+  /*top: -25%;
+  left: 50%;*/
+  padding: 0;
+  margin: 0;
 }
 
 .workout_label p {
+  position: relative;
   font-size: 4vw;
   text-shadow: 0px 0px 3px var(--red);
+  padding: 0;
+  margin: 0;
 }
 
 

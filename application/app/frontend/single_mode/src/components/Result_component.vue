@@ -1,6 +1,6 @@
 <template>
 
-    <div class="result_container">
+    <div class="result_container glassmorphism_gray">
 
         <div class="name_container">
             <h1>{{ this.result.name }}</h1>
@@ -84,8 +84,8 @@
         width: 100%;
         height: 100%;
         padding: 5px;
-        backdrop-filter: blur(10px);
-        background-color: var(--light_gray_70);
+        /*backdrop-filter: blur(10px);
+        background-color: var(--light_gray_70);*/
         z-index: 2;
         color: var(--dark_gray);
         display: flex;
