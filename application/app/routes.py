@@ -72,3 +72,12 @@ def connect():
 def disconnect():
     print(f'User with SID: {request.sid} disconnected!')
 
+
+@socket.on('createroom')
+def create_room(data):
+    pass
+
+
+@socket.on('connect_to_room')
+def connect_to_room(data):
+    pass

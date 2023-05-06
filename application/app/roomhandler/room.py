@@ -12,7 +12,13 @@ class Room:
     def __init__(self, room_name: str, room_supervisor: RoomMate):
         self.room_name: str = room_name
         self.room_supervisor: RoomMate = room_supervisor
-        self.room_mates: List = [self.room_supervisor]
+        self.room_mates: List = []
 
     def mate_connect(self):
+        pass
+
+    def mate_disconnect(self):
+        pass
+
+    def broadcast(self, data):
         pass

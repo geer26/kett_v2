@@ -26,6 +26,8 @@
 
 <script>
 
+import { socket, state  } from "@/socket"
+
 export default {
 
 name: "Room_selector",
@@ -35,6 +37,8 @@ props: {
 
 methods: {
   connect(){
+    //this.$emit("start_loading")
+    socket.connect()
     this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
   }
 },
@@ -42,6 +46,7 @@ methods: {
 data(){return{
     room: "",
     new_room: true,
+    state: state,
 }},
 
 }

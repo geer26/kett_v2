@@ -1,6 +1,8 @@
 <template>
 
-  <Room_selector v-if="!this.connected" @connect_to_room="this.connect_to_room"/>
+  <Room_selector v-if="!this.connected"
+    @connect_to_room="this.connect_to_room"
+    @start_loading="this.startload"/>
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
@@ -11,7 +13,7 @@
       <img v-if="this.conn" src="./assets/img/connected.png" alt="" class="connectionimage">
       <img v-if="!this.conn" src="./assets/img/disconnected.png" alt="" class="connectionimage">
       STATION TABLE
-      <ConnectionManager/>
+      <!--<ConnectionManager/>-->
 
     </div>
 
@@ -44,7 +46,7 @@
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from "./components/Spinner_component.vue"
 //import ConnectionState from './components/Connectionstate.vue'
-import ConnectionManager from './components/ConnectionManager.vue'
+//import ConnectionManager from './components/ConnectionManager.vue'
 import { socket, state } from "@/socket"
 
 export default {
@@ -55,8 +57,9 @@ export default {
     Room_selector,
     Spinner_component,
     //ConnectionState,
-    ConnectionManager,
+    //ConnectionManager,
   },
+
 
   computed: {
     conn() {
@@ -67,10 +70,18 @@ export default {
   methods: {
     connect_to_room(data){
       // TODO try connection
-      data
       console.log("DATA AT CONNECTION: " + data.new_room + " - " + data.room_name)
       this.connected = true
-    }
+      this.endload()
+    },
+
+    startload(){
+      this.loading = true
+    },
+
+    endload(){
+      this.loading = false
+    },
   },
 
   data(){return{
