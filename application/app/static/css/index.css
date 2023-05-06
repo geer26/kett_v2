@@ -100,13 +100,20 @@ body{
     background-color: var(--dark_gray_70);
     border-radius: 5px;
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     margin: 30px;
-    box-shadow: var(--yellow_shadow);
-    backdrop-filter: blur(3px);
+    /*box-shadow: var(--yellow_shadow);
+    backdrop-filter: blur(3px);*/
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color:  rgba( 228,226,226, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 5px;
+    border: 1px solid rgba( 228,226,226, 0.2);
 }
 
 
