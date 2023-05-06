@@ -29,3 +29,4 @@ module.exports = defineConfig({
   outputDir: "./dist/",
   assetsDir: "static",
 })
+
