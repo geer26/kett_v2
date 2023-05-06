@@ -3,29 +3,29 @@ services:
 
 #< ----------------------- >
 
-#  proxy:
+  kett_proxy:
 
-#    container_name: kett_proxy
+    container_name: kett_proxy
 
-#    hostname: kett_proxy
+    hostname: kett_proxy
 
-#    build: ./proxy/.
+    build: ./proxy/.
 
-#    ports:
-#      - "80:80" # port for apis
-#      - "443:443"
+    ports:
+      - "80:80"
+      - "443:443"
 
-#    volumes:
-#      - ./proxy/conf/:/etc/nginx/conf.d
-#      - ./proxy/def_conf/:/etc/nginx/sites-available/:ro
-#      - ./proxy/def_conf/:/etc/nginx/sites-enabled/:ro
-#      - ./proxy/logs/:/var/log/nginx
-#      - ./proxy/certs:/certs:ro
+    volumes:
+      - ./proxy/conf/:/etc/nginx/conf.d
+      - ./proxy/def_conf/:/etc/nginx/sites-available/:ro
+      - ./proxy/def_conf/:/etc/nginx/sites-enabled/:ro
+      - ./proxy/logs/:/var/log/nginx
+      - ./proxy/certs:/certs:ro
 
-#    depends_on:
-#      - kett_backend
+    depends_on:
+      - kett_backend
 
-#    restart: always
+    restart: always
 
 #< ----------------------- >
 
