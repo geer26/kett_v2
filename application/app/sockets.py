@@ -1,6 +1,6 @@
 from flask import request
 from flask_socketio import send, emit
-from app import app, socket, db
+from app import app, socket, db, roomlist
 
 from .roomhandler import Room, RoomMate
 
