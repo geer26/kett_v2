@@ -27,6 +27,7 @@ roomlist = RoomList([])
 
 from app import models
 from app.routes import *
+from app.sockets import *
 
 
 os.system(f"echo 'APP RUNNING'")

@@ -1,10 +1,6 @@
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_socketio import send, emit
-from app import app, socket, db
-
-from .roomhandler import Room, RoomMate
-
+from app import app, db
 from app.models import User, Workout
 
 
@@ -59,25 +55,3 @@ def addsu(username, password):
     db.session.add(user)
     db.session.commit()
     return redirect('/')
-
-
-
-@socket.on('connect')
-def connect():
-    print(f'User with SID: {request.sid} connected!')
-    emit('my response', {'SID': f'{request.sid}'})
-
-
-@socket.on('disconnect')
-def disconnect():
-    print(f'User with SID: {request.sid} disconnected!')
-
-
-@socket.on('createroom')
-def create_room(data):
-    pass
-
-
-@socket.on('connect_to_room')
-def connect_to_room(data):
-    pass
