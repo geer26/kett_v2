@@ -26,10 +26,9 @@ class Room:
     def broadcast(self, data):
         pass
 
-    def has_supervisor(self):
-        for mate in self.room_mates:
-            if mate.supervisor:
-                return True
+    def has_supervisor(self) -> bool:
+        if self.room_supervisor != None:
+            return True
         return False
 
     def get_mate_by_name(self, name) -> RoomMate|None:
@@ -91,7 +90,8 @@ class RoomList:
 
     def get_room_by_roomname(self, roomname) -> Room|None:
         for room in self.rooms:
-           if room.room_name == roomname : return Room
+            print(f'ROOM IN SEARCH: {room.room_name}')
+            if room.room_name == roomname : return room
         return None
 
     def push_room(self, room: Room) -> bool:

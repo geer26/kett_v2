@@ -20,8 +20,8 @@
                 <a :class="{blu_selected : this.new_room}" class="unselected_text" @click="this.new_room=true">CREATE</a>
             </div>
 
-            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.create">CREATE</a>
-            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.create">JOIN</a>
+            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.create_room">CREATE</a>
+            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.join_room">JOIN</a>
         
         </div>
 
@@ -61,7 +61,7 @@ computed: {
 
 methods: {
 
-  create(){
+  create_room(){
     if(!this.conn){
       alert("Server is unavailable!")
       return
@@ -72,6 +72,20 @@ methods: {
     }
 
     socket.emit('createroom', {room_name: this.room, super: true, new_room: this.new_room})
+    return
+  },
+
+  join_room(){
+    if(!this.conn){
+      alert("Server is unavailable!")
+      return
+    }
+    if(this.room == "") {
+      alert("Event name must be specified!")
+      return
+    }
+
+    socket.emit('joinroom', {room_name: this.room, super: true, new_room: this.new_room})
     return
   },
 
