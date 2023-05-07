@@ -22,7 +22,6 @@ def disconnect():
             if mate.supervisor:
                 room.room_supervisor = None
     roomlist.clearup_empty_rooms()
-    print(f'ROOMLIST LEN: {len(roomlist.rooms)}')
 
 
 @socket.on('createroom')
@@ -54,6 +53,4 @@ def create_room(data):
             socket.emit('room_confirmed', {'status': 1, 'message': 'Joined to room!'})
     else:
         raise Exception("Invalid operation, new room argument required!")
-
-    print(f'ROOMLIST LEN: {len(roomlist.rooms)}')
 
