@@ -21,9 +21,5 @@ def disconnect():
 
 @socket.on('createroom')
 def create_room(data):
-    pass
+    print(f'create: {data}')
 
-
-@socket.on('connect_to_room')
-def connect_to_room(data):
-    pass

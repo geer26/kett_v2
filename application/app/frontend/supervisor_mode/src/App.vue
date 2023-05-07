@@ -44,10 +44,8 @@
 <script>
 
 import Room_selector from './components/Room_selector_component.vue'
-import Spinner_component from "./components/Spinner_component.vue"
-//import ConnectionState from './components/Connectionstate.vue'
-//import ConnectionManager from './components/ConnectionManager.vue'
-import { socket, state } from "@/socket"
+import Spinner_component from './components/Spinner_component.vue'
+import { socket, state } from '@/socket'
 
 export default {
 
@@ -56,8 +54,6 @@ export default {
   components: {
     Room_selector,
     Spinner_component,
-    //ConnectionState,
-    //ConnectionManager,
   },
 
 

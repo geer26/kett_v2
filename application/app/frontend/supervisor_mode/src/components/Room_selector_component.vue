@@ -2,10 +2,14 @@
     <div class="modal_background">
         
         <div class="modal glassmorphism_gray">
+
+            <div class="room_label_container">
+              <img v-if="this.conn" src="../assets/img/connected.png" alt="" class="connectionimage">
+              <img v-if="!this.conn" src="../assets/img/disconnected.png" alt="" class="connectionimage">
+              <h1 style="margin: 5px;">EVENT</h1>
+            </div>         
             
-            <h1 style="margin: 5px;">EVENT</h1>
-            
-            <input type="text" v-model="this.room" class="room_input">
+            <input type="text" v-model="this.room" class="room_input" :disabled="!this.conn">
             
             <div class="room_selection">
                 <a :class="{orang_selected : !this.new_room}" class="unselected_text" @click="this.new_room=false">JOIN</a>
@@ -16,8 +20,8 @@
                 <a :class="{blu_selected : this.new_room}" class="unselected_text" @click="this.new_room=true">CREATE</a>
             </div>
 
-            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.connect">CREATE</a>
-            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.connect">JOIN</a>
+            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.create">CREATE</a>
+            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.create">JOIN</a>
         
         </div>
 
@@ -31,16 +35,40 @@ import { socket, state  } from "@/socket"
 export default {
 
 name: "Room_selector",
+
+mounted(){
+  socket.on('room_confirmed', (data) => {
+    console.log(data)
+    this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+  })
+},
+
 props: {
   
 },
 
+computed: {
+    conn() {
+      return state.connected
+    }
+  },
+
 methods: {
-  connect(){
-    //this.$emit("start_loading")
-    socket.connect()
-    this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
-  }
+
+  create(){
+    if(!this.conn){
+      alert("Server is unavailable!")
+      return
+    }
+    if(this.room == "") {
+      alert("Event name must be specified!")
+      return
+    }
+
+    socket.emit('createroom', {room_name: this.room, super: true, new_room: this.new_room})
+    return
+  },
+
 },
 
 data(){return{
@@ -72,9 +100,6 @@ data(){return{
     position: relative;
     max-width: 30%;
     padding: 10px;
-    /*background-color: var(--dark_gray_70);
-    border-radius: 5px;
-    box-shadow: var(--yellow_shadow);*/
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -186,6 +211,19 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.room_label_container{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.connectionimage {
+  max-height: 5vh;
 }
 
 </style>
