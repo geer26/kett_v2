@@ -26,6 +26,12 @@ class Room:
     def broadcast(self, data):
         pass
 
+    def has_supervisor(self):
+        for mate in self.room_mates:
+            if mate.supervisor:
+                return True
+        return False
+
     def get_mate_by_name(self, name) -> RoomMate|None:
         for mate in self.room_mates:
             if mate.name == name:

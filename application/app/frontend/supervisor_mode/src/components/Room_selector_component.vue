@@ -39,7 +39,13 @@ name: "Room_selector",
 mounted(){
   socket.on('room_confirmed', (data) => {
     console.log(data)
-    this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+    if (data.status == 1){
+      this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+      return
+    } else {
+      alert(data.message)
+    }
+
   })
 },
 

@@ -12,7 +12,7 @@
 
       <img v-if="this.conn" src="./assets/img/connected.png" alt="" class="connectionimage">
       <img v-if="!this.conn" src="./assets/img/disconnected.png" alt="" class="connectionimage">
-      STATION TABLE
+      <p>{{ this.room }}</p>
       <!--<ConnectionManager/>-->
 
     </div>
@@ -66,7 +66,8 @@ export default {
   methods: {
     connect_to_room(data){
       // TODO try connection
-      console.log("DATA AT CONNECTION: " + data.new_room + " - " + data.room_name)
+      //console.log("DATA AT CONNECTION: " + data.new_room + " - " + data.room_name)
+      this.room = data.room_name
       this.connected = true
       this.endload()
     },
