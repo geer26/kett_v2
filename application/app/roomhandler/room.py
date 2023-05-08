@@ -1,6 +1,8 @@
+import asyncio
 from typing import List
 from dataclasses import dataclass
 from flask_socketio import SocketIO
+from uuid import uuid4
 
 
 class RoomMate:
@@ -16,6 +18,8 @@ class Room:
         self.room_name: str = room_name
         self.room_supervisor: RoomMate = room_supervisor
         self.room_mates: List[RoomMate] = []
+        self.socket = socket
+        self.namespace = f'{room_name}:{uuid4()}'
 
     def mate_connect(self):
         pass
@@ -25,6 +29,11 @@ class Room:
 
     def broadcast(self, data):
         pass
+
+    async def socket_send(self, data):
+        for mate in self.room_mates:
+            await self.socket.emit(self.namespace, data, to=mate.SID)
+
 
     def has_supervisor(self) -> bool:
         if self.room_supervisor != None:
