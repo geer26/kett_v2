@@ -39,11 +39,16 @@ def join_room(data):
     if not room.has_supervisor() and data['super'] == True:
         room.room_supervisor = mate
         room.room_mates.append(mate)
-        socket.emit('room_confirmed', {'status': 1, 'message': 'Joined to room as supervisor!'}, to=SID)
+        socket.emit('room_confirmed', {'status': 1,
+                                       'message': 'Joined to room as supervisor!',
+                                       'data': {'namepace': f'{room.namespace}'}}, to=SID)
         return
     if data.get('super') == None or data['super'] != True:
         room.room_mates.append(mate)
-        socket.emit('room_confirmed', {'status': 1, 'message': 'Joined to room as supervised!'}, to=SID)
+        socket.emit('room_confirmed', {'status': 1,
+                                       'message': 'Joined to room as supervised!',
+                                       'data': {'namepace': f'{room.namespace}'}
+                                       }, to=SID)
 
 
 
