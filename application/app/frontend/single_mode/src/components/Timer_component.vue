@@ -20,11 +20,14 @@ export default {
       if (this.time == 0){
         return "00:00:00"
       }
-      let hour = Math.floor(rem/3600) > 10 ? Math.floor(rem/3600) : "0" + Math.floor(rem/3600) 
+      let hour = Math.floor(rem/3600) >= 9 ? Math.floor(rem/3600) : "0" + Math.floor(rem/3600) 
+      if (Math.floor(rem/3600) == 9) {hour = "09"}
       rem = rem%3600
-      let min = Math.floor(rem/60) > 10 ? Math.floor(rem/60) : "0" + Math.floor(rem/60)
+      let min = Math.floor(rem/60) >=9 ? Math.floor(rem/60) : "0" + Math.floor(rem/60)
+      if (Math.floor(rem/60) == 9) {min = "09"}
       rem = rem%60
-      let sec = rem > 10 ? rem : "0" + rem
+      let sec = rem >=9 ? rem : "0" + rem
+      if (rem == 9) {sec = "09"}
       return `${hour}:${min}:${sec}`
     }
   },

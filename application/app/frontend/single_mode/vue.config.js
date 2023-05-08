@@ -2,7 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 
 //PRODUCTION SETTING
 //UNCOMMENT ON COMPILE
-
+/*
 module.exports = defineConfig({
     publicPath: '../../static/single_dist',
     outputDir: '../../static/single_dist',
@@ -18,12 +18,12 @@ module.exports = defineConfig({
 
     transpileDependencies: true
 })
-
+*/
 
 
 //DEV SETTING
 //UNCOMMENT AT DEV
-/*
+
 module.exports = defineConfig({
   transpileDependencies: true,
   // outputDir must be added to Django's TEMPLATE_DIRS
@@ -31,4 +31,4 @@ module.exports = defineConfig({
   // assetsDir must match Django's STATIC_URL
   assetsDir: "static",
 })
-*/
+
