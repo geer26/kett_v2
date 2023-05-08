@@ -45,6 +45,11 @@ def supervisor_mode():
     return render_template('supervisor_vue.html')
 
 
+@app.route('/supervised/')
+def supervised_mode():
+    return render_template('supervised_vue.html')
+
+
 @app.route('/adduser/<username>/<password>')
 def addsu(username, password):
     #eg. https://example.com/examplesuname/example1Password!2
