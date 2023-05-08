@@ -27,12 +27,14 @@ class Room:
     def mate_disconnect(self):
         pass
 
-    def broadcast(self, data):
-        pass
-
-    async def socket_send(self, data):
+    def broadcast(self, data) -> None:
         for mate in self.room_mates:
-            await self.socket.emit(self.namespace, data, to=mate.SID)
+            asyncio.run(self.socket_send(namespace=self.namespace, data=data, sid=mate.SID))
+        return
+
+    async def socket_send(self, namespace, data, sid) -> None:
+        await self.socket.emit(namespace, data, to=sid)
+        return
 
 
     def has_supervisor(self) -> bool:
