@@ -3,25 +3,19 @@
         
         <div class="modal glassmorphism_gray">
 
-            <div class="room_label_container">
-              <img v-if="this.conn" src="../assets/img/connected.png" alt="" class="connectionimage">
-              <img v-if="!this.conn" src="../assets/img/disconnected.png" alt="" class="connectionimage">
-              <h1 style="margin: 5px;">EVENT</h1>
-            </div>         
-            
+            <h4 style="margin: 5px;">Station name</h4>
+            <input type="text" v-model="this.station" class="room_input" :disabled="!this.conn">
+            <h4 style="margin: 5px;">Event name</h4>
             <input type="text" v-model="this.room" class="room_input" :disabled="!this.conn">
             
-            <div class="room_selection">
-                <a :class="{orang_selected : !this.new_room}" class="unselected_text" @click="this.new_room=false">JOIN</a>
-                <label class="switch">
-                    <input type="checkbox" v-model="this.new_room">
-                    <span class="slider round"></span>
-                </label>
-                <a :class="{blu_selected : this.new_room}" class="unselected_text" @click="this.new_room=true">CREATE</a>
-            </div>
+            <a class="btn" :class="{orange_btn : !this.conn, blue_btn : this.conn}" style="width:70%; justify-content: space-around;" @click="this.join_room">
+              
+              <img v-if="this.conn" src="../assets/img/connected.png" alt="" class="connectionimage">
+              <img v-if="!this.conn" src="../assets/img/disconnected.png" alt="" class="connectionimage">
 
-            <a class="btn blue_btn" style="width:70%;" v-if="this.new_room" @click="this.create_room">CREATE</a>
-            <a class="btn orange_btn" style="width:70%;" v-if="!this.new_room" @click="this.join_room">JOIN</a>
+              <p v-if="this.conn">join</p>
+              <p v-if="!this.conn">server down</p>
+            </a>
         
         </div>
 
@@ -61,39 +55,34 @@ computed: {
 
 methods: {
 
-  create_room(){
-    if(!this.conn){
-      alert("Server is unavailable!")
-      return
-    }
-    if(this.room == "") {
-      alert("Event name must be specified!")
-      return
-    }
-
-    socket.emit('createroom', {room_name: this.room, super: true, new_room: this.new_room})
-    return
-  },
-
   join_room(){
+    //this.$emit("start_loading")
+
     if(!this.conn){
       alert("Server is unavailable!")
+      //this.$emit("stop_loading")
+      return
+    }
+    if (this.station == ""){
+      alert("Station name must be specified!")
+      //this.$emit("stop_loading")
       return
     }
     if(this.room == "") {
       alert("Event name must be specified!")
+      //this.$emit("stop_loading")
       return
     }
 
-    socket.emit('joinroom', {room_name: this.room, super: true, new_room: this.new_room})
+    socket.emit('joinroom', {room_name: this.room, super: false, station_name: this.station})
     return
   },
 
 },
 
 data(){return{
+    station: "",
     room: "",
-    new_room: true,
     state: state,
 }},
 
@@ -243,7 +232,8 @@ input:checked + .slider:before {
 }
 
 .connectionimage {
-  max-height: 5vh;
+  max-height: 3vh;
+  margin: 0;
 }
 
 </style>

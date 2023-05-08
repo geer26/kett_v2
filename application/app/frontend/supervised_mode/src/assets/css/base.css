@@ -3,8 +3,10 @@
     --dark_gray_70: rgba(28, 28, 28, .7);
     --light_gray: #e3e3e3;
     --light_gray_70: rgba(227, 227, 227,.7);
+    --light_gray_40: rgba(227, 227, 227,.4);
     --yellow: #e6ee9c;
     --orang: #e8a13f;
+    --blu: rgb(112, 147, 187);
     --yellow_70: rgba(230,238,156,.7);
     --yellow_40: rgba(230,238,156,.4);
     --green: #216822;
@@ -14,6 +16,7 @@
     --yellow_shadow_left: -5px 0px 10px 1px #e6ee9c;
     --light_gray_shadow: 0px 0px 9px 1px #e3e3e3;
 }
+
 
 @keyframes blink {
     0%   {opacity: 0;}
@@ -83,7 +86,7 @@ body{
     height: 100vh;
     width: 100vw;
 
-    background-image: url("../img/bg_logo.jpg");
+    background-image: url("../img/bg_logoless.jpg");
     background-color: var(--dark_gray);
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
@@ -146,6 +149,7 @@ body{
     text-transform: uppercase;
     transform: .2s ease;
     cursor: pointer;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.81);
 }
 
 .btn p{
@@ -174,6 +178,11 @@ body{
 .orange_btn{
     background-color: var(--orang);
     color: var(--light_gray);
+}
+
+.blue_btn{
+    background-color: var(--blu);
+    color: var(--dark_gray);
 }
 
 

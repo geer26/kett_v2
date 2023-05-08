@@ -101,7 +101,6 @@ class RoomList:
 
     def get_room_by_roomname(self, roomname) -> Room|None:
         for room in self.rooms:
-            print(f'ROOM IN SEARCH: {room.room_name}')
             if room.room_name == roomname : return room
         return None
 

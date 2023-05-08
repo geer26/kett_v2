@@ -28,6 +28,7 @@ def disconnect():
 @socket.on('joinroom')
 def join_room(data):
     SID = request.sid
+    print(data)
     mate = RoomMate(name="SUPERVISOR", SID=request.sid, supervisor=data['super'])
     room = roomlist.get_room_by_roomname(data['room_name'])
     if not data.get("room_name") or room == None:
