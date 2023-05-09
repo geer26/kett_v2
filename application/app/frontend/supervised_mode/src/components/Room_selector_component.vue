@@ -32,9 +32,8 @@ name: "Room_selector",
 
 mounted(){
   socket.on('room_confirmed', (data) => {
-    console.log(data)
     if (data.status == 1){
-      this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+      this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room, namespace: data.namespace})
       return
     } else {
       alert(data.message)

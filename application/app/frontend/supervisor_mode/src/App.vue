@@ -66,8 +66,8 @@ export default {
   methods: {
     connect_to_room(data){
       // TODO try connection
-      //console.log("DATA AT CONNECTION: " + data.new_room + " - " + data.room_name)
       this.room = data.room_name
+      this.namespace = data.namespace
       this.connected = true
       this.endload()
     },
@@ -79,11 +79,17 @@ export default {
     endload(){
       this.loading = false
     },
+
+    socket_send(data){
+      data.namespace = this.namespace
+      socket.emit(data.event, data)
+    }
   },
 
   data(){return{
     room: null,
     connected: false,
+    namespace: "",
     loading: false,
     socket: socket,
     state: state

@@ -38,9 +38,8 @@ name: "Room_selector",
 
 mounted(){
   socket.on('room_confirmed', (data) => {
-    console.log(data)
     if (data.status == 1){
-      this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room})
+      this.$emit('connect_to_room', {room_name: this.room, nemaspace: data.namespace})
       return
     } else {
       alert(data.message)
@@ -71,7 +70,7 @@ methods: {
       return
     }
 
-    socket.emit('createroom', {room_name: this.room, super: true, new_room: this.new_room})
+    socket.emit('createroom', {room_name: this.room, super: true, new_room: this.new_room, station_name: 'SUPERVISOR'})
     return
   },
 
@@ -85,7 +84,7 @@ methods: {
       return
     }
 
-    socket.emit('joinroom', {room_name: this.room, super: true, new_room: this.new_room})
+    socket.emit('joinroom', {room_name: this.room, super: true, new_room: this.new_room, station_name: 'SUPERVISOR'})
     return
   },
 

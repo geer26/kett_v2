@@ -28,42 +28,48 @@ def disconnect():
 @socket.on('joinroom')
 def join_room(data):
     SID = request.sid
-    print(data)
-    mate = RoomMate(name="SUPERVISOR", SID=request.sid, supervisor=data['super'])
+    mate = RoomMate(name=str(data['station_name']), SID=request.sid, supervisor=data['super'])
     room = roomlist.get_room_by_roomname(data['room_name'])
     if not data.get("room_name") or room == None:
-        socket.emit('room_confirmed', {'status': 0, 'message': 'Room doesn\'t exists!'}, to=SID)
+        socket.emit('room_confirmed', {'status': 0, 'message': 'Event doesn\'t exists!'}, to=SID)
         return
     if room.has_supervisor() and data['super'] == True:
         socket.emit('room_confirmed', {'status': 0, 'message': 'Connect as supervisor is forbidden!'}, to=SID)
         return
+    for m in room.room_mates:
+        if mate.name == m.name:
+            socket.emit('room_confirmed', {'status': 0, 'message': 'This station already joined!'}, to=SID)
+            return
     if not room.has_supervisor() and data['super'] == True:
         room.room_supervisor = mate
         room.room_mates.append(mate)
         socket.emit('room_confirmed', {'status': 1,
-                                       'message': 'Joined to room as supervisor!',
-                                       'data': {'namespace': f'{room.namespace}'}}, to=SID)
+                                       'message': 'Joined to event as supervisor!',
+                                       'namespace': f'{room.namespace}'}, to=SID)
         return
     if data.get('super') == None or data['super'] != True:
         room.room_mates.append(mate)
         socket.emit('room_confirmed', {'status': 1,
-                                       'message': 'Joined to room as supervised!',
-                                       'data': {'namespace': f'{room.namespace}'}
-                                       }, to=SID)
+                                       'message': 'Joined to event as supervised!',
+                                       'namespace': f'{room.namespace}'}, to=SID)
+        if room.room_supervisor:
+            supervisor_sid = room.room_supervisor.SID
+            room_mate_data = {'name' : f'{mate.name}'}
+        return
 
 
 @socket.on('createroom')
 def create_room(data):
     SID = request.sid
     if data.get('new_room') and data['new_room']:
-        mate = RoomMate(name="SUPERVISOR", SID=request.sid, supervisor=data['super'])
+        mate = RoomMate(name=data['station_name'], SID=request.sid, supervisor=data['super'])
         room = Room(room_name=data['room_name'], room_supervisor=mate, socket=socket)
         room.room_mates.append(mate)
         if roomlist.push_room(room):
-            socket.emit('room_confirmed', {'status': 1, 'message': 'Room created!'}, to=SID)
+            socket.emit('room_confirmed', {'status': 1, 'message': 'Event created!', 'namespace': f'{room.namespace}'}, to=SID)
             return
         else:
-            socket.emit('room_confirmed', {'status': 0, 'message': 'Room already exists!'}, to=SID)
+            socket.emit('room_confirmed', {'status': 0, 'message': 'Event already exists!'}, to=SID)
             return
     else:
         raise Exception("Invalid operation, new room argument required!")
