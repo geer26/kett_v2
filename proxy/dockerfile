@@ -1,7 +1,8 @@
 FROM nginx:alpine
 RUN mkdir /certs
+RUN mkdir /static
 RUN rm -rf /var/www/html/*
 RUN rm -rf /usr/share/nginx/html/*
 RUN mkdir /etc/nginx/sites-available
 RUN mkdir /etc/nginx/sites-enabled
-RUN mkdir /static
+

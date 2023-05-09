@@ -42,13 +42,13 @@ class Room:
             return True
         return False
 
-    def get_mate_by_name(self, name) -> RoomMate|None:
+    def get_mate_by_name(self, name):
         for mate in self.room_mates:
             if mate.name == name:
                 return mate
         return None
 
-    def get_mate_by_sid(self, sid) -> RoomMate|None:
+    def get_mate_by_sid(self, sid):
         for mate in self.room_mates:
             if mate.SID ==sid:
                 return mate
@@ -71,7 +71,7 @@ class RoomList:
 
     rooms: List[Room]
 
-    def get_mate_by_sid(self, sid) -> RoomMate|None:
+    def get_mate_by_sid(self, sid):
         mate = None
         for room in self.rooms:
             mate = room.get_mate_by_sid(sid)
@@ -79,7 +79,7 @@ class RoomList:
                 break
         return mate
 
-    def get_mate_by_name(self,name) -> RoomMate|None:
+    def get_mate_by_name(self,name):
         mate = None
         for room in self.rooms:
             mate = room.get_mate_by_name(name)
@@ -87,19 +87,19 @@ class RoomList:
                 break
         return mate
 
-    def get_room_by_sid(self, sid) -> Room|None:
+    def get_room_by_sid(self, sid):
         for room in self.rooms:
             if room.has_mate_by_sid(sid):
                 return room
         return None
 
-    def get_room_by_name(self, name) -> Room|None:
+    def get_room_by_name(self, name):
         for room in self.rooms:
             if room.has_mate_by_name(name):
                 return room
         return None
 
-    def get_room_by_roomname(self, roomname) -> Room|None:
+    def get_room_by_roomname(self, roomname):
         for room in self.rooms:
             if room.room_name == roomname : return room
         return None
