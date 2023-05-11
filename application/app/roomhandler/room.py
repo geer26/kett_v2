@@ -21,19 +21,29 @@ class Room:
         self.socket = socket
         self.namespace = f'{room_name}:{uuid4()}'
 
-    def mate_connect(self):
-        pass
+    def mate_connect(self, mate: RoomMate) -> None:
+        if not mate.supervisor and self.room_supervisor != None:
+            supervisor_sid = self.room_supervisor.SID
+            data = {'mate_name': str(mate.name), 'mate_sid': mate.SID}
+            print(f'Mate ({mate.name}) just connected!')
+            self.socket_send(namespace="mate_connect", data=data, sid=supervisor_sid)
 
-    def mate_disconnect(self):
-        pass
+    def mate_disconnect(self, mate) -> None:
+        print(f'Mate ({mate.name}) just disconnected!')
+        self.room_mates.remove(mate)
+        if not mate.supervisor and self.room_supervisor != None:
+            supervisor_sid = self.room_supervisor.SID
+            data = {'mate.name': str(mate.name), 'mate_sid': mate.SID}
+            self.socket_send(namespace="mate_disconnect", data=data, sid=supervisor_sid)
+
 
     def broadcast(self, data) -> None:
         for mate in self.room_mates:
-            asyncio.run(self.socket_send(namespace=self.namespace, data=data, sid=mate.SID))
+            self.socket_send(namespace='room_broadcast', data=data, sid=mate.SID)
         return
 
-    async def socket_send(self, namespace, data, sid) -> None:
-        await self.socket.emit(namespace, data, to=sid)
+    def socket_send(self, namespace, data, sid) -> None:
+        self.socket.emit(namespace, data, to=sid)
         return
 
 

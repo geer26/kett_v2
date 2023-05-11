@@ -56,6 +56,19 @@ export default {
     Spinner_component,
   },
 
+  mounted(){
+
+    socket.on("mate_connect", (data) => {
+      alert(`${data.mate_name} just joined!`)
+      console.log(data)
+    })
+
+    socket.on("mate_disconnect", (data) => {
+      alert(`${data.mate_name} has just eft the event!`)
+      console.log(data)
+    })
+
+  },
 
   computed: {
     conn() {
