@@ -6,21 +6,38 @@
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
-  <h1>SUPERVISED</h1>
+  <Workout_component v-if="this.in_progress"/>
+
+  <!--
+  <h1 class="station_name">{{ this.room }}</h1>
+  <h1 class="competitor_name">{{ this.comp_name }}</h1>
+  -->
+  <h1 class="station_name">roomname</h1>
+  <h1 class="competitor_name">competitor name</h1>
+
 </template>
 
 <script>
 
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from './components/Spinner_component.vue'
+import Workout_component from './components/Workout_component.vue'
 import { socket, state } from '@/socket'
 
 export default {
 
   name: 'App',
+
   components: {
     Room_selector,
     Spinner_component,
+    Workout_component
+  },
+
+  mounted(){
+
+  socket.on("nameenter", (data) => this.comp_name = data.name)
+
   },
 
   computed: {
@@ -55,11 +72,14 @@ export default {
 
   data(){return{
     room: null,
-    connected: false,
+    //connected: false,
+    connected: true,
     namespace: "",
     loading: false,
     socket: socket,
-    state: state
+    state: state,
+    in_progress: false,
+    comp_name: "",
     }
   },
 
@@ -68,4 +88,17 @@ export default {
 </script>
 
 <style>
+
+.station_name{
+  margin: 0;
+  font-size: 10vh;
+  color: var(--red);
+}
+
+.competitor_name{
+  margin: 0;
+  font-size: 20vh;
+  color: var(--yellow);
+}
+
 </style>

@@ -83,3 +83,9 @@ def create_room(data):
     else:
         raise Exception("Invalid operation, new room argument required!")
 
+
+@socket.on('nameenter')
+def name_entered(data):
+    name = data['data']['name']
+    sid = data['data']['sid']
+    socket.emit('nameenter', {'name': f'{name}'}, to=sid)

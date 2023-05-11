@@ -18,19 +18,54 @@
 
     </div>
 
+    <!--
     <div class="station_table_container glassmorphism_gray">
-      <div class="station_entry">
+      <div class="station_entry"
+        v-for="mate in this.supervised_list" 
+        v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" 
+        :key="mate.mate_sid"
+      >
+
         <div class="station_icon_container">
+
           <label class="switch">
             <input type="checkbox" v-model="this.new_room">
               <span class="slider round"></span>
           </label>
+
         </div>
-        <p>STATION NAME</p>
+
+        <p>{{ mate.mate_name }}</p>
+
         <input type="text">
+
       </div>
-      
-      <p v-for="mate in this.supervised_list" v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" :key="mate.mate_sid"> {{ mate.mate_name }} </p>
+      -->
+
+    <div class="station_table_container glassmorphism_gray">
+      <div class="station_entry"
+        v-for="mate in this.supervised_list" 
+        v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" 
+        :key="mate.mate_sid"
+      >
+
+        <div class="station_icon_container">
+
+          <label class="switch">
+            <input type="checkbox" v-model="this.new_room" checked>
+            <span class="slider round"></span>
+          </label>
+
+        </div>
+
+        <div class="station_name_container">
+          <p>STATION 1 </p>
+        </div>
+    
+        <input type="text" @keyup="send_name($event, mate.mate_sid)">
+
+      </div>
+
     </div>
 
     <div class="control_panel_container">
@@ -122,13 +157,24 @@ export default {
     startevent(){
       const data = {}
       data.workout = this.workout.workout
-    }
+    },
+
+    send_name(e, sid){
+      let data = {
+        event: "nameenter",
+        data: {
+          sid: sid,
+          name: e.target.value
+        }
+      }
+      this.socket_send(data)
+    },
   },
 
   data(){return{
     room: null,
     //connected: false,
-    connected: true,
+    connected: false,
     namespace: "",
     loading: false,
     socket: socket,
@@ -187,13 +233,20 @@ export default {
   width: 99%;
   height: 10%;
   display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 }
 
-.station_entry p{
-  margin: 10px;
+.station_name_container{
+  position: relative;
+  width: 8%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .station_entry input{
@@ -211,7 +264,7 @@ export default {
 
 .station_icon_container{
   position: relative;
-  width: 5%;
+  width: fit-content;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -219,9 +272,16 @@ export default {
   align-items: center;
 }
 
+.station_icon_container p{
+  position: relative;
+  margin: 0;
+  font-size: 2rem;
+  display: inline-block;
+}
+
 .switch {
   position: relative;
-  display: inline-block;
+  display: block;
   width: 60px;
   height: 34px;
   margin-left: 10px;
