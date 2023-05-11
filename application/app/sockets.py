@@ -16,14 +16,18 @@ def connect():
 
 @socket.on('disconnect')
 def disconnect():
-    for room in roomlist.rooms:
-        for mate in room.room_mates:
-            if mate.SID == request.sid:
-                room.mate_disconnect(mate)
-                #room.room_mates.remove(mate)
-            if mate.supervisor:
-                room.room_supervisor = None
+    room = roomlist.get_room_by_sid(request.sid)
+    if not room:
+        roomlist.clearup_empty_rooms()
+        return
+    for mate in room.room_mates:
+        if mate.SID == request.sid:
+            room.mate_disconnect(mate)
+        if mate.SID == request.sid and mate.supervisor == True:
+            room.room_supervisor = None
+            room.mate_disconnect(mate)
     roomlist.clearup_empty_rooms()
+    return
 
 
 @socket.on('joinroom')
@@ -54,15 +58,12 @@ def join_room(data):
                                        'namespace': f'{room.namespace}'}, to=SID)
         return
 
-    if data.get('super') == None or data['super'] != True:
+    if data.get('super') == None or data['super'] == False:
         room.room_mates.append(mate)
+        room.mate_connect(mate)
         socket.emit('room_confirmed', {'status': 1,
                                        'message': 'Joined to event as supervised!',
                                        'namespace': f'{room.namespace}'}, to=SID)
-        if room.room_supervisor:
-            supervisor_sid = room.room_supervisor.SID
-            room_mate_data = {'name' : f'{mate.name}'}
-        room.mate_connect(mate)
         return
 
 

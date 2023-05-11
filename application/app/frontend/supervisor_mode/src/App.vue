@@ -18,21 +18,21 @@
     </div>
 
     <div class="station_table_container glassmorphism_gray">
-
-        
+      <p v-for="mate in this.supervised_list" v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" :key="mate.mate_sid"> {{ mate.mate_name }} </p>
     </div>
 
     <div class="control_panel_container">
 
       <div class="select_workout_container">
-        <select name="select" id="" class="select_box">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
+        <select name="select" id="" class="select_box" v-model="this.workout">
+          <option value="" disabled >- Select workout -</option>
+        <option v-for="wo in this.workouts" v-bind:value="{name: wo.name, workout: wo.workout}" :key="wo.name">{{ wo.name }}</option>
       </select>
       </div>
 
-      <div class="start_button_container"><a class="btn green_btn" style="width:50%;">START</a></div>
+      <div class="start_button_container">
+        <a class="btn green_btn" style="width:50%;" @click="this.startevent">START</a>
+      </div>
 
       <div class="timer_container"><p class="red_text">TIME</p></div>
 
@@ -46,6 +46,7 @@
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from './components/Spinner_component.vue'
 import { socket, state } from '@/socket'
+import { workouts } from '@/workouts/built-in'
 
 export default {
 
@@ -58,14 +59,16 @@ export default {
 
   mounted(){
 
+    this.workouts = workouts
+
     socket.on("mate_connect", (data) => {
-      alert(`${data.mate_name} just joined!`)
-      console.log(data)
-    })
+      this.supervised_list.push(data)
+    }),
 
     socket.on("mate_disconnect", (data) => {
-      alert(`${data.mate_name} has just eft the event!`)
-      console.log(data)
+      this.supervised_list = this.supervised_list.filter( supervised => {
+        return supervised.mate_sid !== data.mate_sid
+      })
     })
 
   },
@@ -96,6 +99,13 @@ export default {
     socket_send(data){
       data.namespace = this.namespace
       socket.emit(data.event, data)
+    },
+
+    startevent(){
+      const data = {}
+      data.workout = this.workout.workout
+
+      //console.log(data)
     }
   },
 
@@ -105,7 +115,10 @@ export default {
     namespace: "",
     loading: false,
     socket: socket,
-    state: state
+    state: state,
+    workouts: [],
+    workout: null,
+    supervised_list: [],
   }}
 
 }
