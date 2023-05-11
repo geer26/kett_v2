@@ -25,8 +25,9 @@ class Room:
         if not mate.supervisor and self.room_supervisor != None:
             supervisor_sid = self.room_supervisor.SID
             data = {'mate_name': str(mate.name), 'mate_sid': mate.SID}
-            print(f'Mate ({mate.name}) just connected!')
             self.socket_send(namespace="mate_connect", data=data, sid=supervisor_sid)
+        if mate.supervisor:
+            self.room_supervisor = mate
 
     def mate_disconnect(self, mate) -> None:
         self.room_mates.remove(mate)

@@ -202,24 +202,6 @@ const half_penthathlon = {
     ]
   }
 
-const custom = {
-  name : "CUSTOM",
-  workout : [
-    {
-      type: "PREPARE",
-      exercise: "PREPARE",
-      time: 5,
-      max_reps: 0
-    },
-    {
-      type: "WORK",
-      exercise: "",
-      time: 0,
-      max_reps: 64000
-    },
-  ]
-}
-
 
 const test_penta = {
   name : "TEST PENTA",
@@ -296,6 +278,5 @@ export const workouts = [
     thirty_mins,
     penthathlon,
     half_penthathlon,
-    custom,
     test_penta,
 ]

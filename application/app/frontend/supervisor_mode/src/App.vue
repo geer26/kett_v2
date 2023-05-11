@@ -4,6 +4,8 @@
     @connect_to_room="this.connect_to_room"
     @start_loading="this.startload"/>
 
+    
+
   <Spinner_component v-if="this.loading" class="spinner"/>
 
   <div class="main_container">
@@ -13,7 +15,6 @@
       <img v-if="this.conn" src="./assets/img/connected.png" alt="" class="connectionimage">
       <img v-if="!this.conn" src="./assets/img/disconnected.png" alt="" class="connectionimage">
       <p>{{ this.room }}</p>
-      <!--<ConnectionManager/>-->
 
     </div>
 
@@ -63,12 +64,14 @@ export default {
 
     socket.on("mate_connect", (data) => {
       this.supervised_list.push(data)
+      this.sort_superviseds()
     }),
 
     socket.on("mate_disconnect", (data) => {
       this.supervised_list = this.supervised_list.filter( supervised => {
         return supervised.mate_sid !== data.mate_sid
       })
+      this.sort_superviseds()
     })
 
   },
@@ -76,7 +79,7 @@ export default {
   computed: {
     conn() {
       return state.connected
-    }
+    },
   },
 
   methods: {
@@ -86,6 +89,10 @@ export default {
       this.namespace = data.namespace
       this.connected = true
       this.endload()
+    },
+
+    sort_superviseds(){
+      this.supervised_list.sort((a, b) => a.mate_name.localeCompare(b.mate_name))
     },
 
     startload(){
@@ -104,14 +111,13 @@ export default {
     startevent(){
       const data = {}
       data.workout = this.workout.workout
-
-      //console.log(data)
     }
   },
 
   data(){return{
     room: null,
-    connected: false,
+    //connected: false,
+    connected: true,
     namespace: "",
     loading: false,
     socket: socket,
