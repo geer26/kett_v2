@@ -19,6 +19,17 @@
     </div>
 
     <div class="station_table_container glassmorphism_gray">
+      <div class="station_entry">
+        <div class="station_icon_container">
+          <label class="switch">
+            <input type="checkbox" v-model="this.new_room">
+              <span class="slider round"></span>
+          </label>
+        </div>
+        <p>STATION NAME</p>
+        <input type="text">
+      </div>
+      
       <p v-for="mate in this.supervised_list" v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" :key="mate.mate_sid"> {{ mate.mate_name }} </p>
     </div>
 
@@ -165,8 +176,111 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   overflow: auto;
+  padding: 10px;
+}
+
+.station_entry{
+  position: relative;
+  border: 2px solid red;
+  width: 99%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.station_entry p{
+  margin: 10px;
+}
+
+.station_entry input{
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  /*width: 15%;*/
+  max-height: 6vh;
+  background-color: var(--light_gray);
+  color: var(--dark_gray);
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
+}
+
+.station_icon_container{
+  position: relative;
+  width: 5%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--dark_gray);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--light_gray);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--blu);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 .table_label{
@@ -201,7 +315,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 
 .select_box{
   border-radius: 5px;
