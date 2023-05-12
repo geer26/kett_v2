@@ -18,30 +18,6 @@
 
     </div>
 
-    <!--
-    <div class="station_table_container glassmorphism_gray">
-      <div class="station_entry"
-        v-for="mate in this.supervised_list" 
-        v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" 
-        :key="mate.mate_sid"
-      >
-
-        <div class="station_icon_container">
-
-          <label class="switch">
-            <input type="checkbox" v-model="this.new_room">
-              <span class="slider round"></span>
-          </label>
-
-        </div>
-
-        <p>{{ mate.mate_name }}</p>
-
-        <input type="text">
-
-      </div>
-      -->
-
     <div class="station_table_container glassmorphism_gray">
       <div class="station_entry"
         v-for="mate in this.supervised_list" 
@@ -59,7 +35,7 @@
         </div>
 
         <div class="station_name_container">
-          <p>STATION 1 </p>
+          <p> {{ mate.mate_name }} </p>
         </div>
     
         <input type="text" @keyup="send_name($event, mate.mate_sid)">

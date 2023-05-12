@@ -8,12 +8,10 @@
 
   <Workout_component v-if="this.in_progress"/>
 
-  <!--
-  <h1 class="station_name">{{ this.room }}</h1>
+  
+  <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
   <h1 class="competitor_name">{{ this.comp_name }}</h1>
-  -->
-  <h1 class="station_name">roomname</h1>
-  <h1 class="competitor_name">competitor name</h1>
+  
 
 </template>
 
@@ -52,6 +50,7 @@ export default {
       console.log(data)
       this.room = data.room_name
       this.namespace = data.namespace
+      this.station_name = data.station_name
       this.connected = true
       this.endload()
     },
@@ -73,11 +72,12 @@ export default {
   data(){return{
     room: null,
     //connected: false,
-    connected: true,
+    connected: false,
     namespace: "",
     loading: false,
     socket: socket,
     state: state,
+    station_name: "",
     in_progress: false,
     comp_name: "",
     }
