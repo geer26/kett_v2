@@ -18,7 +18,7 @@ def index():
                 return redirect(url_for('index'))
 
             else:
-                login_user(user)
+                login_user(user, remember=False)
                 return redirect(url_for('supervisor_mode'))
 
         else:

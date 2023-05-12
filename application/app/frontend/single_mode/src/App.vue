@@ -113,7 +113,17 @@ export default {
   computed(){
   },
 
+  created: function() {
+    window.addEventListener('keypress',this.keypress);
+  },
+
   methods:{
+
+    keypress(e){
+      if(e.which == 32){
+        this.inc_reps()
+      }
+    },
 
     _init(){
       this.mode = "Single"
