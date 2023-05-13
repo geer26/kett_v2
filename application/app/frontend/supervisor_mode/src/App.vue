@@ -4,8 +4,6 @@
     @connect_to_room="this.connect_to_room"
     @start_loading="this.startload"/>
 
-    
-
   <Spinner_component v-if="this.loading" class="spinner"/>
 
   <div class="main_container">
@@ -14,21 +12,23 @@
 
       <img v-if="this.conn" src="./assets/img/connected.png" alt="" class="connectionimage">
       <img v-if="!this.conn" src="./assets/img/disconnected.png" alt="" class="connectionimage">
-      <p>{{ this.room }}</p>
+      <p style="font-size: 2rem; color: var(--red)">{{ this.room }}</p>
 
     </div>
 
     <div class="station_table_container glassmorphism_gray">
+
       <div class="station_entry"
-        v-for="mate in this.supervised_list" 
-        v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" 
-        :key="mate.mate_sid"
+      v-for="mate in this.supervised_list" 
+      v-bind:value="{sid:mate.mate_sid, name:mate.mate_name}" 
+      :key="mate.mate_sid"
       >
 
-        <div class="station_icon_container">
-
+        <div class="station_icon_container" v-if="!this.running_workout">
+          
           <label class="switch">
-            <input type="checkbox" v-model="this.new_room" checked>
+            <input type="checkbox" v-model="mate.suspended"
+            @change="this.send_empty_name(mate)">
             <span class="slider round"></span>
           </label>
 
@@ -38,7 +38,13 @@
           <p> {{ mate.mate_name }} </p>
         </div>
     
-        <input type="text" @keyup="send_name($event, mate.mate_sid)">
+        <input type="text"
+          @keyup="send_name($event, mate.mate_sid)"
+          v-model="mate.comp_name"
+          v-if="!mate.suspended && !this.running_workout"
+          >
+
+        <p v-if="this.running_workout && mate.comp_name !== ''">{{ mate.comp_name }}</p>
 
       </div>
 
@@ -47,10 +53,9 @@
     <div class="control_panel_container">
 
       <div class="select_workout_container">
-        <select name="select" id="" class="select_box" v-model="this.workout">
-          <option value="" disabled >- Select workout -</option>
-        <option v-for="wo in this.workouts" v-bind:value="{name: wo.name, workout: wo.workout}" :key="wo.name">{{ wo.name }}</option>
-      </select>
+        <select class="select_box" v-model="this.workout">
+          <option v-for="wo in this.workouts" :value="{name: wo.name, workout: wo.workout}" :key="wo.name">{{ wo.name }}</option>
+        </select>
       </div>
 
       <div class="start_button_container">
@@ -87,12 +92,17 @@ export default {
     socket.on("mate_connect", (data) => {
       this.supervised_list.push(data)
       this.sort_superviseds()
-    }),
+    })
 
     socket.on("mate_disconnect", (data) => {
       this.supervised_list = this.supervised_list.filter( supervised => {
         return supervised.mate_sid !== data.mate_sid
       })
+      this.sort_superviseds()
+    })
+
+    socket.on("provide_roomstatus", (data) => {
+      this.supervised_list.push(data)
       this.sort_superviseds()
     })
 
@@ -105,11 +115,13 @@ export default {
   },
 
   methods: {
+
     connect_to_room(data){
       // TODO try connection
       this.room = data.room_name
       this.namespace = data.namespace
       this.connected = true
+      this.socket.emit("fetch_roomstatus", {room: this.room})
       this.endload()
     },
 
@@ -131,20 +143,40 @@ export default {
     },
 
     startevent(){
-      const data = {}
-      data.workout = this.workout.workout
+      if(!this.workout){
+        alert('Select a workout!')
+        return
+      }
+      socket.emit("send_workout", this.workout)
+      this.running_workout = true
     },
 
     send_name(e, sid){
+      let n = e.target.value
       let data = {
         event: "nameenter",
         data: {
           sid: sid,
-          name: e.target.value
+          name: n
         }
       }
       this.socket_send(data)
     },
+
+    send_empty_name(mate){
+      const sid = mate.mate_sid
+      mate.comp_name = ""
+
+      let data = {
+        event: "nameenter",
+        data:{
+          sid: sid,
+          name: ""
+        }
+      }
+      this.socket_send(data)
+    }
+
   },
 
   data(){return{
@@ -158,6 +190,7 @@ export default {
     workouts: [],
     workout: null,
     supervised_list: [],
+    running_workout: false,
   }}
 
 }
@@ -192,7 +225,7 @@ export default {
 
 .station_table_container{
   position: relative;
-  height: 75%;
+  height: 100%;
   width: 99%;
   padding: 20px;
   display: flex;
@@ -205,12 +238,9 @@ export default {
 
 .station_entry{
   position: relative;
-  border: 2px solid red;
   width: 99%;
   height: 10%;
   display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
@@ -225,6 +255,11 @@ export default {
   align-items: center;
 }
 
+.station_name_container p{
+  font-size: .8rem;
+  text-transform: uppercase;
+}
+
 .station_entry input{
   border-radius: 5px;
   font-size: 1rem;
@@ -236,6 +271,10 @@ export default {
   text-align: center;
   margin: 10px;
   padding: 5px;
+}
+
+.station_entry input:disabled{
+  background-color: var(--dark_gray);
 }
 
 .station_icon_container{
@@ -279,7 +318,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--dark_gray);
+  background-color: var(--blu);
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -297,7 +336,7 @@ export default {
 }
 
 input:checked + .slider {
-  background-color: var(--blu);
+  background-color: var(--orang);
 }
 
 input:focus + .slider {

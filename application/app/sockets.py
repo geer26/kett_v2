@@ -1,5 +1,6 @@
 from flask import request
 from flask_socketio import send, emit
+from flask_login import login_required
 from app import app, socket, db, roomlist
 
 from .roomhandler import Room, RoomMate
@@ -68,6 +69,7 @@ def join_room(data):
 
 
 @socket.on('createroom')
+#@login_required
 def create_room(data):
     SID = request.sid
     if data.get('new_room') and data['new_room']:
@@ -84,8 +86,55 @@ def create_room(data):
         raise Exception("Invalid operation, new room argument required!")
 
 
+@socket.on('fetch_roomstatus')
+#@login_required
+def fetch_roomstatus(data):
+    room = roomlist.get_room_by_sid(request.sid)
+    if not room:
+        print('NO ROOM!')
+        return
+
+    room.broadcast(namespace='fetch_roomstatus', data={})
+    return
+
+
+@socket.on('provide_roomstatus')
+def provide_roomstatus(data):
+    data['mate_sid'] = request.sid
+    room = roomlist.get_room_by_sid(request.sid)
+    if not room:
+        print('NO ROOM!')
+        return
+    mate = room.get_mate_by_sid(request.sid)
+    if not mate:
+        print('NO ROOM!')
+        return
+    socket.emit('provide_roomstatus', (data), to=room.room_supervisor.SID)
+
+
+
 @socket.on('nameenter')
+#@login_required
 def name_entered(data):
     name = data['data']['name']
     sid = data['data']['sid']
     socket.emit('nameenter', {'name': f'{name}'}, to=sid)
+
+
+@socket.on('suspend_mate')
+#@login_required
+def suspend_mate(data):
+    sid = data['sid']
+    socket.emit('toggle_suspend', {}, to=sid)
+
+
+@socket.on('send_workout')
+#login_required
+def send_workout(data):
+    room = roomlist.get_room_by_sid(request.sid)
+    if not room:
+        print('NO ROOM')
+        return
+    room.broadcast(namespace='send_workout', data=data)
+
+

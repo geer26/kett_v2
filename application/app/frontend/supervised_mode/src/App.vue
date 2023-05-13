@@ -8,7 +8,7 @@
 
   <Workout_component v-if="this.in_progress"/>
 
-  
+  <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
   <h1 class="competitor_name">{{ this.comp_name }}</h1>
   
@@ -36,6 +36,29 @@ export default {
 
   socket.on("nameenter", (data) => this.comp_name = data.name)
 
+  socket.on('fetch_roomstatus', () => {
+    socket.emit('provide_roomstatus', {
+      room_name: this.room,
+      super: false,
+      mate_name: this.station_name,
+      comp_name: this.comp_name,
+      suspended: this.suspended
+    })
+  })
+
+  socket.on('toggle_suspend', () => {
+    this.suspended = !this.suspended
+  })
+
+  socket.on("send_workout", (data) => {
+    console.log(data)
+    if(this.comp_name !== "" && !this.suspended){
+      this.workout = data
+      //TODO start here!
+    }
+    return
+  })
+
   },
 
   computed: {
@@ -47,7 +70,6 @@ export default {
   methods: {
     connect_to_room(data){
       // TODO try connection
-      console.log(data)
       this.room = data.room_name
       this.namespace = data.namespace
       this.station_name = data.station_name
@@ -80,6 +102,8 @@ export default {
     station_name: "",
     in_progress: false,
     comp_name: "",
+    suspended: false,
+    workout: {},
     }
   },
 

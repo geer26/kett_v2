@@ -21,6 +21,7 @@ class Room:
         self.socket = socket
         self.namespace = f'{room_name}:{uuid4()}'
 
+
     def mate_connect(self, mate: RoomMate) -> None:
         if not mate.supervisor and self.room_supervisor != None:
             supervisor_sid = self.room_supervisor.SID
@@ -29,17 +30,19 @@ class Room:
         if mate.supervisor:
             self.room_supervisor = mate
 
+
     def mate_disconnect(self, mate) -> None:
-        self.room_mates.remove(mate)
+        if mate in self.room_mates:
+            self.room_mates.remove(mate)
         if self.room_supervisor != None:
             supervisor_sid = self.room_supervisor.SID
             data = {'mate_name': str(mate.name), 'mate_sid': mate.SID}
             self.socket_send(namespace="mate_disconnect", data=data, sid=supervisor_sid)
 
 
-    def broadcast(self, data) -> None:
+    def broadcast(self, namespace, data) -> None:
         for mate in self.room_mates:
-            self.socket_send(namespace='room_broadcast', data=data, sid=mate.SID)
+            self.socket_send(namespace=namespace, data=data, sid=mate.SID)
         return
 
     def socket_send(self, namespace, data, sid) -> None:
@@ -75,6 +78,7 @@ class Room:
             if mate.SID == sid:
                 return True
         return False
+
 
 @dataclass
 class RoomList:

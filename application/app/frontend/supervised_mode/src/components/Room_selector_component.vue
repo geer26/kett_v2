@@ -31,15 +31,25 @@ export default {
 name: "Room_selector",
 
 mounted(){
+
   socket.on('room_confirmed', (data) => {
     if (data.status == 1){
-      this.$emit('connect_to_room', {new_room: this.new_room, room_name: this.room, namespace: data.namespace, station_name: this.station})
+      this.$emit('connect_to_room', {
+        new_room: this.new_room,
+        room_name: this.room,
+        namespace: data.namespace,
+        station_name: this.station,
+        comp_name: ""
+      })
       return
     } else {
       alert(data.message)
     }
 
   })
+
+  
+
 },
 
 props: {
@@ -73,7 +83,13 @@ methods: {
       return
     }
 
-    socket.emit('joinroom', {room_name: this.room, super: false, station_name: this.station})
+    socket.emit('joinroom', {
+      room_name: this.room,
+      super: false,
+      station_name: this.station,
+      suspended: false,
+      comp_name: ""  
+    })
     return
   },
 
