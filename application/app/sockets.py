@@ -138,3 +138,18 @@ def send_workout(data):
     room.broadcast(namespace='send_workout', data=data)
 
 
+@socket.on('ready_to_go')
+def ready_to_go(data):
+    sid = request.sid
+    data['sid'] = sid
+    room = roomlist.get_room_by_sid(sid)
+    if not room:
+        print('NO ROOM!')
+        return
+    if room.room_supervisor:
+        super_sid = room.room_supervisor.SID
+        socket.emit('platform_ready', data, to=super_sid)
+    else:
+        print('NO ROOM SUPERVISOR')
+
+

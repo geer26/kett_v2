@@ -39,7 +39,8 @@ mounted(){
         room_name: this.room,
         namespace: data.namespace,
         station_name: this.station,
-        comp_name: ""
+        comp_name: "",
+        ready_to_go: false,
       })
       return
     } else {
@@ -88,7 +89,8 @@ methods: {
       super: false,
       station_name: this.station,
       suspended: false,
-      comp_name: ""  
+      comp_name: "",
+      ready_to_go: false,
     })
     return
   },

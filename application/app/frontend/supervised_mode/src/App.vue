@@ -11,6 +11,13 @@
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
   <h1 class="competitor_name">{{ this.comp_name }}</h1>
+
+  <div class="readyicon_container">
+    <img src="./assets/img/check.png" alt="ready_to_go"
+    class="readyicon"
+    v-if="!this.ready_to_go"
+    @click="this.iamready">
+  </div>
   
 
 </template>
@@ -42,7 +49,8 @@ export default {
       super: false,
       mate_name: this.station_name,
       comp_name: this.comp_name,
-      suspended: this.suspended
+      suspended: this.suspended,
+      ready_to_go: this.ready_to_go,
     })
   })
 
@@ -52,7 +60,7 @@ export default {
 
   socket.on("send_workout", (data) => {
     console.log(data)
-    if(this.comp_name !== "" && !this.suspended){
+    if(this.comp_name !== "" && !this.suspended && this.ready_to_go){
       this.workout = data
       //TODO start here!
     }
@@ -88,6 +96,14 @@ export default {
     socket_send(data){
       data.namespace = this.namespace
       socket.emit(data.event, data)
+    },
+
+    iamready(){
+      this.ready_to_go = true
+      let data = {
+        ready_to_go: true,
+      }
+      socket.emit("ready_to_go", data)
     }
   },
 
@@ -104,6 +120,7 @@ export default {
     comp_name: "",
     suspended: false,
     workout: {},
+    ready_to_go: false,
     }
   },
 
@@ -123,6 +140,29 @@ export default {
   margin: 0;
   font-size: 20vh;
   color: var(--yellow);
+}
+
+.readyicon_container{
+  position: relative;
+  height: 10%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.readyicon{
+  position: relative;
+  height: 90%;
+  cursor: pointer;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+  transition: .3s ease;
+}
+
+.readyicon:hover{
+  height: 95%;
 }
 
 </style>

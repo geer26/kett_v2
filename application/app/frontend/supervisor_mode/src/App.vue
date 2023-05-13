@@ -26,6 +26,9 @@
 
         <div class="station_icon_container" v-if="!this.running_workout">
           
+          <img src="./assets/img/check.png" alt="checked" class="checkicon"
+          v-if="mate.ready_to_go">
+
           <label class="switch">
             <input type="checkbox" v-model="mate.suspended"
             @change="this.send_empty_name(mate)">
@@ -104,6 +107,14 @@ export default {
     socket.on("provide_roomstatus", (data) => {
       this.supervised_list.push(data)
       this.sort_superviseds()
+    })
+
+    socket.on("platform_ready", data => {
+      let mate = this.supervised_list.filter( supervised => {
+        return supervised.mate_sid == data.sid
+      })
+      console.log(mate)
+      mate.ready_to_go = data.ready_to_go
     })
 
   },
@@ -279,12 +290,18 @@ export default {
 
 .station_icon_container{
   position: relative;
-  width: fit-content;
+  width: 10%;
   height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+}
+
+.checkicon{
+  position:relative;
+  height: 50%;
+
 }
 
 .station_icon_container p{
