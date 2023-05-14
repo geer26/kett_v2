@@ -114,7 +114,7 @@ export default {
       let mate = this.supervised_list.filter( supervised => {
         return supervised.mate_sid == data.sid
       })[0]
-      mate.ready_to_go = true
+      mate.ready_to_go = data.ready_to_go
     })
 
   },
