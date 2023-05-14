@@ -41,7 +41,12 @@ export default {
 
   mounted(){
 
-  socket.on("nameenter", (data) => this.comp_name = data.name)
+  socket.on("nameenter", (data) => {
+    this.comp_name = data.name
+    if (data.name == ""){
+      this.ready_to_go = false
+    }
+  })
 
   socket.on('fetch_roomstatus', () => {
     socket.emit('provide_roomstatus', {

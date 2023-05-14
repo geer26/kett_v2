@@ -25,15 +25,15 @@
       >
 
         <div class="station_icon_container" v-if="!this.running_workout">
-          
-          <img src="./assets/img/check.png" alt="checked" class="checkicon"
-          v-if="mate.ready_to_go">
-
+        
           <label class="switch">
             <input type="checkbox" v-model="mate.suspended"
             @change="this.send_empty_name(mate)">
             <span class="slider round"></span>
           </label>
+
+          <img src="./assets/img/check.png" alt="checked" class="checkicon"
+          v-if="mate.ready_to_go">
 
         </div>
 
@@ -172,6 +172,10 @@ export default {
         }
       }
       this.socket_send(data)
+      if(n == ""){
+        let mate = this.supervised_list.filter( m => {return m.mate_sid == sid} )[0]
+        mate.ready_to_go = false
+      }
     },
 
     send_empty_name(mate){
@@ -186,7 +190,8 @@ export default {
         }
       }
       this.socket_send(data)
-    }
+      mate.ready_to_go = false
+    },
 
   },
 
