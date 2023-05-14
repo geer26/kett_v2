@@ -6,7 +6,7 @@
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
-  <Workout_component v-if="this.in_progress"/>
+  <Workout_component v-if="this.ready_to_go" :comp_name="this.comp_name"/>
 
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
