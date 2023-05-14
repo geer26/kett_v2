@@ -10,7 +10,7 @@
 
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
-  <h1 class="competitor_name">{{ this.comp_name }}</h1>
+  <h1 class="competitor_name" @change="this.chage_comp_name">{{ this.comp_name }}</h1>
 
   <div class="readyicon_container">
     <img src="./assets/img/check.png" alt="ready_to_go"
@@ -104,7 +104,18 @@ export default {
         ready_to_go: true,
       }
       socket.emit("ready_to_go", data)
-    }
+    },
+
+    chage_comp_name(){
+      if(this.comp_name == ""){
+        this.ready_to_go = false
+        let data = {
+        ready_to_go: false,
+      }
+      socket.emit("ready_to_go", data)
+      }
+    },
+
   },
 
   data(){return{
