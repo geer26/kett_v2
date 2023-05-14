@@ -22,10 +22,14 @@ class Room:
         self.namespace = f'{room_name}:{uuid4()}'
 
 
-    def mate_connect(self, mate: RoomMate) -> None:
+    def mate_connect(self, mate: RoomMate, d=None) -> None:
         if not mate.supervisor and self.room_supervisor != None:
             supervisor_sid = self.room_supervisor.SID
             data = {'mate_name': str(mate.name), 'mate_sid': mate.SID}
+            if d:
+                data['ready_to_go'] = d['ready_to_go']
+                #data[] = d[]
+                #data[] = d[]
             self.socket_send(namespace="mate_connect", data=data, sid=supervisor_sid)
         if mate.supervisor:
             self.room_supervisor = mate

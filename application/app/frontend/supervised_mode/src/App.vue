@@ -15,7 +15,7 @@
   <div class="readyicon_container">
     <img src="./assets/img/check.png" alt="ready_to_go"
     class="readyicon"
-    v-if="!this.ready_to_go"
+    v-if="!this.ready_to_go && this.connected && this.comp_name !== ''"
     @click="this.iamready">
   </div>
   

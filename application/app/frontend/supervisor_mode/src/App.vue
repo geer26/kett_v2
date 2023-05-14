@@ -93,6 +93,7 @@ export default {
     this.workouts = workouts
 
     socket.on("mate_connect", (data) => {
+      data.ready_to_go = false
       this.supervised_list.push(data)
       this.sort_superviseds()
     })
@@ -112,9 +113,8 @@ export default {
     socket.on("platform_ready", data => {
       let mate = this.supervised_list.filter( supervised => {
         return supervised.mate_sid == data.sid
-      })
-      console.log(mate)
-      mate.ready_to_go = data.ready_to_go
+      })[0]
+      mate.ready_to_go = true
     })
 
   },
