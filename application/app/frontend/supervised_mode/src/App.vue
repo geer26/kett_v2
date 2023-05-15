@@ -130,7 +130,14 @@ export default {
     finished(result){
       console.log(result)
       this.ready_to_go = false
-    }
+    },
+
+    close_results(){
+      this.show_results = false
+      this.$refs.wo.result = {}
+      //this.name = ""
+      //this._init()
+    },
 
   },
 
@@ -147,6 +154,7 @@ export default {
     suspended: false,
     workout: {},
     ready_to_go: false,
+    show_results: false,
     }
   },
 
