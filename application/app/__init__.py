@@ -20,8 +20,8 @@ migrate = Migrate(app, db)
 
 login = LoginManager(app)
 
-#socket = SocketIO(app, cors_allowed_origins="*")
-socket = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
+socket = SocketIO(app, cors_allowed_origins="*")
+#socket = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
 
 roomlist = RoomList([])
 
