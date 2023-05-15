@@ -64,6 +64,10 @@
             <p>stop</p>
         </a>
 
+        <a :href="this.base_url" class="btn orange_btn btn_base">
+            <p style="color: var(--dark_gray)"> back </p>
+        </a>
+
     </div>
 
 </template>
@@ -144,6 +148,7 @@ export default {
         workout_selected: false,
         timed_selected: false,
         ready_to_go: false,
+        base_url: window.location.origin,
     }
 
     }

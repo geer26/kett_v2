@@ -146,6 +146,7 @@ body{
     text-transform: uppercase;
     transform: .2s ease;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .btn p{

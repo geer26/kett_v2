@@ -52,7 +52,9 @@
       
     </div>
 
-    <div class="labels">
+    <div class="labels"
+    @click="this.inc_reps"
+    @contextmenu.prevent="this.dec_reps">
 
       <div class="time_label">
         <p>TIME</p>

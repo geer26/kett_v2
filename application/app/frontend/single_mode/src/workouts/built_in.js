@@ -172,7 +172,7 @@ const half_penthathlon = {
       {
         type: "WORK",
         exercise: "JERK",
-        time: 360,
+        time: 180,
         max_reps: 60
       },
       {
