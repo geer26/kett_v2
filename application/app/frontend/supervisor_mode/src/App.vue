@@ -134,7 +134,7 @@ export default {
 
       this.supervised_list.forEach( supervised => {
         console.log(supervised)
-        if (!supervised.ready_to_go && !supervised.suspended){
+        if ((!supervised.comp_name && !supervised.suspended)){
           return false
         }
       })
