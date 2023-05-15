@@ -8,9 +8,35 @@
          COUNTER UPPER
         </div>
 
-        <div></div>
+        <div
+        class="info_upper"
+        @click="this.inc_reps"
+        @contextmenu.prevent="this.dec_reps">
+        INFO OUPPER
+        </div>
 
-        <div></div>
+        <div class="labels">
+          <div class="time_label">
+            <p>TIME</p>
+          </div>
+          <div class="workout_label">
+            <p>{{ this.exercise }}</p>
+          </div>
+        </div>
+
+        <div
+        class="counter_lower" 
+        @click="this.inc_reps"
+        @contextmenu.prevent="this.dec_reps">
+        COUNTER LOWER
+        </div>
+
+        <div
+        class="info_lower weight_text_container"
+        @click="this.inc_reps"
+        @contextmenu.prevent="this.dec_reps">
+        INFO LOWER
+        </div>
 
     </div>
 </template>

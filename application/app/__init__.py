@@ -8,9 +8,9 @@ from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from flask_login import LoginManager
 from .roomhandler import RoomList
+from engineio.payload import Payload
 
-#from app.blueprints.single.single import single_mode
-
+Payload.max_decode_packets = 50
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,7 +20,8 @@ migrate = Migrate(app, db)
 
 login = LoginManager(app)
 
-socket = SocketIO(app, cors_allowed_origins="*")
+#socket = SocketIO(app, cors_allowed_origins="*")
+socket = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
 
 roomlist = RoomList([])
 
