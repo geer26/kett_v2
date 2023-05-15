@@ -6,7 +6,11 @@
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
-  <Workout_component v-if="this.ready_to_go" :comp_name="this.comp_name"/>
+  <Workout_component
+    v-if="this.ready_to_go"
+    :comp_name="this.comp_name"
+    ref="wo"
+    @finished="this.finished"/>
 
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
@@ -64,10 +68,11 @@ export default {
   })
 
   socket.on("send_workout", (data) => {
-    console.log(data)
+    //console.log(data)
     if(this.comp_name !== "" && !this.suspended && this.ready_to_go){
       this.workout = data
       //TODO start here!
+      this.$refs.wo.start_workout(data)
     }
     return
   })
@@ -81,6 +86,7 @@ export default {
   },
 
   methods: {
+
     connect_to_room(data){
       // TODO try connection
       this.room = data.room_name
@@ -121,6 +127,11 @@ export default {
       }
     },
 
+    finished(result){
+      console.log(result)
+      this.ready_to_go = false
+    }
+
   },
 
   data(){return{
@@ -132,7 +143,6 @@ export default {
     socket: socket,
     state: state,
     station_name: "",
-    in_progress: false,
     comp_name: "",
     suspended: false,
     workout: {},

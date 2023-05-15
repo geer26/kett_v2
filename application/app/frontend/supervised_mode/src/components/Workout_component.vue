@@ -5,37 +5,78 @@
         class="counter_upper"
         @click="this.inc_reps"
         @contextmenu.prevent="this.dec_reps">
-         COUNTER UPPER
+         
+          <div class="rep_label">
+            <p>REPS</p>
+          </div>
+
+          <h1 :class="{ green_text : maxed, red_text : !maxed }">{{this.reps}}</h1>
+
+          <div class="name_label">
+            <p>{{ this.comp_name }}</p>
+          </div>
+
         </div>
 
         <div
         class="info_upper"
         @click="this.inc_reps"
         @contextmenu.prevent="this.dec_reps">
-        INFO OUPPER
+
+          <div class="blinker" v-if="this.workout && this.state == 'PREPARE'">
+            <img src="../assets/img/attention.png" alt="ATTENTION" class="info_image">
+          </div>
+
+          <div class="blinker" v-if="this.workout && this.state == 'REST'">
+            <img src="../assets/img/pause.png" alt="ATTENTION" class="info_image">
+          </div>
+
+          <div class="blinker" v-if="this.workout && this.state == 'WORK'">
+            <img src="../assets/img/work.png" alt="ATTENTION" class="info_image">
+          </div>
+
+          <div class="blinker" v-if="this.workout && this.state == 'FINISHED'">
+            <img src="../assets/img/stop.png" alt="ATTENTION" class="info_image">
+          </div>
+
         </div>
 
-        <div class="labels">
+        <div class="labels"
+        @click="this.inc_reps"
+        @contextmenu.prevent="this.dec_reps">
+
           <div class="time_label">
             <p>TIME</p>
           </div>
+
           <div class="workout_label">
             <p>{{ this.exercise }}</p>
           </div>
+
         </div>
 
         <div
         class="counter_lower" 
         @click="this.inc_reps"
         @contextmenu.prevent="this.dec_reps">
-        COUNTER LOWER
+        
+          <Timer_component :time="this.time" class="time-counter" ref="timer"/>
+
         </div>
 
         <div
         class="info_lower weight_text_container"
         @click="this.inc_reps"
         @contextmenu.prevent="this.dec_reps">
-        INFO LOWER
+        
+          <img src="../assets/img/arrow_up.png" alt="UPARROW" v-if="this.show_weight_adjust" class="pointered kb_image"
+          @click="this.inc_weight"/>
+
+          <p style="font-size: 7vh;">{{ this.weight }}</p>
+
+          <img src="../assets/img/arrow_down.png" alt="DOWNARROW" v-if="this.show_weight_adjust" class="pointered kb_image"
+          @click="this.dec_weight"/>
+
         </div>
 
     </div>
@@ -43,8 +84,18 @@
 
 <script>
 
+import Timer_component from './Timer_component.vue'
+
 export default {
     name: 'Workout_component',
+
+    components: {
+      Timer_component,
+    },
+
+    created: function() {
+      window.addEventListener('keypress',this.keypress);
+    },
 
     props: {
         comp_name: String,
@@ -69,6 +120,7 @@ export default {
         inc_reps(){
             if (this.countable_state.includes(this.state) && this.reps < this.max_reps){
                 ++this.reps
+                // TODO emit on socket!
                 if (this.max_reps == this.reps && this.countable_state.includes(this.state)){
                     this.maxed = true
                 } else {
@@ -88,13 +140,79 @@ export default {
             }
         },
 
+        inc_weight(){
+          if (this.weight <= 46){
+            this.weight += 2
+          }
+        },
+
+        dec_weight(){
+          if (this.weight >= 4){
+            this.weight -= 2
+          }
+        },
+
+        start_workout(data){
+          this.workout = data.workout
+          this.result.name = this.comp_name
+          this.result.results = []
+          this.next()
+        },
+
+        next(){
+          this.index += 1
+          if (this.index >= this.workout.length) {
+            this.state = "FINISHED"
+            this.show_results = true
+            this.$emit("finished", this.result)
+          } else {
+            // TODO emit on socket!
+            this.do_exercise(this.index)
+          }
+        },
+
+        do_exercise(index){
+          let res = {}
+          let exercise = this.workout[index]
+          this.state = exercise.type
+          this.max_reps = exercise.max_reps
+          this.exercise = exercise.exercise
+          res.exercise = exercise.exercise
+          this.reps = 0
+          this.maxed = false
+          if (exercise.type == "WORK" || this.state == "FINISHED" || this.state == "COOLDOWN"){
+            this.show_weight_adjust = false
+          } else {
+            this.show_weight_adjust = true
+          }
+
+          // Hátralévő idő mutatása
+          this.time = exercise.time
+          res.time = this.time
+          res.weight = this.weight
+
+          // Indítjuk a visszaszámlálást
+          this.timer = setInterval(() => {
+            this.time -= 1
+              // Ha lejárt az időzítő
+              if (this.time < 0) {
+                //!!!SAVE RESULT!!!
+                res.reps = this.reps
+                // Időzítést töröljük - ez fontos!
+                this.time = 0
+                clearInterval(this.timer)
+                if (this.state == "WORK"){this.result.results.push(res)}
+                this.next();
+              }
+          }, 1000);
+        },
+
     },
 
     data(){return{
-        mode: "Single",
         countable_state: ["WORK"],
         non_countable_state: ["PREPARE", "WAIT", "REST", "COOLDOWN", "FINISHED"],
-        state: "PREPARE",
+        state: "",
         reps: 0,
         weight: 24,
         show_weight_adjust: true,
@@ -102,8 +220,8 @@ export default {
         maxed: false,
         exercise: "---",
         time: 0,
-        workout: null,
         result: {},
+        workout: {},
         index: -1,
         timer: null,
         show_results: false,

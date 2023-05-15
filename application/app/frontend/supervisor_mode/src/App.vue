@@ -55,13 +55,15 @@
 
     <div class="control_panel_container">
 
-      <div class="select_workout_container">
+      <div class="select_workout_container"
+      v-if="!this.running_workout">
         <select class="select_box" v-model="this.workout">
           <option v-for="wo in this.workouts" :value="{name: wo.name, workout: wo.workout}" :key="wo.name">{{ wo.name }}</option>
         </select>
       </div>
 
-      <div class="start_button_container">
+      <div class="start_button_container"
+      v-if="!this.running_workout">
         <a class="btn green_btn" style="width:50%;" @click="this.startevent">START</a>
       </div>
 
