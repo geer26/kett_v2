@@ -63,7 +63,7 @@
       </div>
 
       <div class="start_button_container"
-      v-if="!this.running_workout">
+      v-if="this.all_ready">
         <a class="btn green_btn" style="width:50%;" @click="this.startevent">START</a>
       </div>
 
@@ -96,6 +96,7 @@ export default {
 
     socket.on("mate_connect", (data) => {
       data.ready_to_go = false
+      data.suspended = false
       this.supervised_list.push(data)
       this.sort_superviseds()
     })
@@ -125,6 +126,21 @@ export default {
     conn() {
       return state.connected
     },
+
+    all_ready(){
+      if (this.supervised_list.length == 0 || this.running_workout){
+        return false
+      }
+
+      this.supervised_list.forEach( supervised => {
+        console.log(supervised)
+        if (!supervised.ready_to_go && !supervised.suspended){
+          return false
+        }
+      })
+      return true
+    }
+
   },
 
   methods: {
