@@ -58,13 +58,19 @@
         </div>
 
         <div class="comp_name-container">
+
           <div class="comp_name-exercise_name">
-            <p>EXERCISE NAME</p>
+            <p>{{ mate.current_exercise }}</p>
+          </div>
+
+          <div class="comp_name-exercise_weight">
+            <p>{{ mate.current_weight }}kg</p>
           </div>
 
           <div class="comp_name-exercise_reps">
-            <p>00</p>
+            <p>{{ mate.current_reps }}</p>
           </div>
+
         </div>
 
       </div>
@@ -138,6 +144,22 @@ export default {
       mate.ready_to_go = data.ready_to_go
     })
 
+    socket.on("accept_exercise_change", data => {
+      let mate = this.supervised_list.filter( supervised => {
+        return supervised.mate_sid == data.sid
+      })[0]
+      // current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps
+      if(data.current_exercise){
+        mate.current_exercise = data.current_exercise
+      }
+      if(data.current_weight){
+        mate.current_weight = data.current_weight
+      }
+      if(data.current_reps){
+        mate.current_reps = data.current_reps
+      }
+    })
+
   },
 
   computed: {
@@ -151,7 +173,6 @@ export default {
       }
 
       this.supervised_list.forEach( supervised => {
-        console.log(supervised)
         if ((!supervised.comp_name && !supervised.suspended)){
           return false
         }
@@ -359,7 +380,7 @@ export default {
 
 .comp_name-exercise_name{
   position: relative;
-  width: 70%;
+  width: 60%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -376,7 +397,7 @@ export default {
 
 .comp_name-exercise_reps{
   position: relative;
-  width: 30%;
+  width: 20%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -384,6 +405,23 @@ export default {
 }
 
 .comp_name-exercise_reps p{
+  font-size: 150%;
+  color: var(--yellow);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.comp_name-exercise_weight{
+  position: relative;
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.comp_name-exercise_weight{
   font-size: 150%;
   color: var(--yellow);
   font-weight: 600;

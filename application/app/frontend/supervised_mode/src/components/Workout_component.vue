@@ -120,6 +120,8 @@ export default {
         inc_reps(){
             if (this.countable_state.includes(this.state) && this.reps < this.max_reps){
                 ++this.reps
+                const d = {current_reps: this.reps}
+                this.$emit("new_exercise", d)
                 // TODO emit on socket!
                 if (this.max_reps == this.reps && this.countable_state.includes(this.state)){
                     this.maxed = true
@@ -132,6 +134,8 @@ export default {
         dec_reps(){
             if (this.countable_state.includes(this.state) && this.reps > 0){
                 --this.reps
+                const d = {current_reps: this.reps}
+                this.$emit("new_exercise", d)
                 if (this.max_reps == this.reps && this.countable_state.includes(this.state)){
                     this.maxed = true
                 } else {
@@ -143,12 +147,16 @@ export default {
         inc_weight(){
           if (this.weight <= 46){
             this.weight += 2
+            const d = {current_weight: this.weight}
+            this.$emit("new_exercise", d)
           }
         },
 
         dec_weight(){
           if (this.weight >= 4){
             this.weight -= 2
+            const d = {current_weight: this.weight}
+            this.$emit("new_exercise", d)
           }
         },
 
@@ -166,7 +174,7 @@ export default {
             this.show_results = true
             this.$emit("finished", this.result)
           } else {
-            // TODO emit on socket!
+            // TODO emit on socket
             this.do_exercise(this.index)
           }
         },
@@ -185,6 +193,10 @@ export default {
           } else {
             this.show_weight_adjust = true
           }
+
+          const d = {current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps}
+          console.log(d)
+          this.$emit('new_exercise', d)
 
           // Hátralévő idő mutatása
           this.time = exercise.time

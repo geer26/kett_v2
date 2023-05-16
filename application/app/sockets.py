@@ -153,3 +153,18 @@ def ready_to_go(data):
         print('NO ROOM SUPERVISOR')
 
 
+@socket.on('new_exercise')
+def new_exercise(data):
+    sid = request.sid
+    data['sid'] = sid
+    room = roomlist.get_room_by_sid(sid)
+    if not room:
+        print('NO ROOM!')
+        return
+    if room.room_supervisor:
+        super_sid = room.room_supervisor.SID
+        socket.emit('accept_exercise_change', data, to=super_sid)
+    else:
+        print('NO ROOM SUPERVISOR')
+
+

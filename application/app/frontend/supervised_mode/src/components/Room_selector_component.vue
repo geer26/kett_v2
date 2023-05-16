@@ -43,6 +43,9 @@ mounted(){
         comp_name: "",
         suspended: false,
         ready_to_go: false,
+        current_exercise: "-",
+        current_weight: 0,
+        current_reps: 0,
       })
       
       return
@@ -94,6 +97,9 @@ methods: {
       comp_name: "",
       suspended: false,
       ready_to_go: false,
+      current_exercise: "-",
+      current_weight: 0,
+      current_reps: 0,
     })
     return
   },

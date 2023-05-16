@@ -59,7 +59,6 @@
                     const row = `${res.exercise},${res.time},${res.weight},${res.reps}\n`
                     csv_header += row
                 })
-                console.log("RES TO SAVE:\n"+csv_header)
                 
                 let filename = `${this.result.name}.csv`
                 let element = document.createElement('a')

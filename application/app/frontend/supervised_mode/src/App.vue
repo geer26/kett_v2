@@ -12,7 +12,8 @@
     v-if="this.ready_to_go"
     :comp_name="this.comp_name"
     ref="wo"
-    @finished="this.finished"/>
+    @finished="this.finished"
+    @new_exercise="this.new_exercise"/>
 
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
   <h1 class="station_name" v-if="!this.show_results">{{ this.station_name.toUpperCase() }}</h1>
@@ -64,6 +65,9 @@ export default {
       comp_name: this.comp_name,
       suspended: this.suspended,
       ready_to_go: this.ready_to_go,
+      current_exercise: "-",
+      current_weight: 0,
+      current_reps: 0,
     })
   })
 
@@ -132,16 +136,20 @@ export default {
     },
 
     finished(result){
-      console.log(result)
       this.ready_to_go = false
       this.result = result
       this.show_results = true
+      //TODO send finish trigger and the results
     },
 
     close_results(){
       this.show_results = false
       this.result = {}
       //this._init()
+    },
+
+    new_exercise(data){
+      socket.emit("new_exercise", data)
     },
 
   },
@@ -161,6 +169,9 @@ export default {
     workout: {},
     ready_to_go: false,
     show_results: false,
+    current_exercise: "-",
+    current_weight: 0,
+    current_reps: 0,
     }
   },
 
@@ -185,7 +196,7 @@ export default {
 .readyicon_container{
   position: relative;
   height: 10%;
-  width: 50%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -194,7 +205,7 @@ export default {
 
 .readyicon{
   position: relative;
-  height: 90%;
+  height: 60%;
   cursor: pointer;
   -webkit-filter: drop-shadow(5px 5px 5px #222);
   filter: drop-shadow(5px 5px 5px #222);
@@ -202,7 +213,7 @@ export default {
 }
 
 .readyicon:hover{
-  height: 95%;
+  height: 63%;
 }
 
 </style>

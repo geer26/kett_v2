@@ -28,8 +28,9 @@ class Room:
             data = {'mate_name': str(mate.name), 'mate_sid': mate.SID}
             if d:
                 data['ready_to_go'] = d['ready_to_go']
-                #data[] = d[]
-                #data[] = d[]
+                data['current_exercise'] = d['current_exercise']
+                data['current_weight'] = d['current_weight']
+                data['current_reps'] = d['current_reps']
             self.socket_send(namespace="mate_connect", data=data, sid=supervisor_sid)
         if mate.supervisor:
             self.room_supervisor = mate
