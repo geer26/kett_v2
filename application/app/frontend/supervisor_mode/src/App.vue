@@ -24,30 +24,48 @@
       :key="mate.mate_sid"
       >
 
-        <div class="station_icon_container" v-if="!this.running_workout">
+        <div class="station_icon_container">
         
-          <label class="switch">
+          <label class="switch" v-if="!this.running_workout">
             <input type="checkbox" v-model="mate.suspended"
             @change="this.send_empty_name(mate)">
             <span class="slider round"></span>
           </label>
 
           <img src="./assets/img/check.png" alt="checked" class="checkicon"
-          v-if="mate.ready_to_go">
+          v-if="mate.ready_to_go && !this.running_workout"
+          >
 
         </div>
 
         <div class="station_name_container">
-          <p> {{ mate.mate_name }} </p>
-        </div>
-    
-        <input type="text"
-          @keyup="send_name($event, mate.mate_sid)"
-          v-model="mate.comp_name"
-          v-if="!mate.suspended && !this.running_workout"
-          >
 
-        <p v-if="this.running_workout && mate.comp_name !== ''">{{ mate.comp_name }}</p>
+          <div class="mate_name">
+            <p> {{ mate.mate_name }} </p>
+          </div>
+
+          <div class="comp_name">
+            <input type="text"
+            style="width: 80%"
+            @keyup="send_name($event, mate.mate_sid)"
+            v-model="mate.comp_name"
+            v-if="!mate.suspended && !this.running_workout"
+            >
+
+            <p v-if="this.running_workout && mate.comp_name !== ''">{{ mate.comp_name }}</p>
+          </div>
+
+        </div>
+
+        <div class="comp_name-container">
+          <div class="comp_name-exercise_name">
+            <p>EXERCISE NAME</p>
+          </div>
+
+          <div class="comp_name-exercise_reps">
+            <p>00</p>
+          </div>
+        </div>
 
       </div>
 
@@ -138,6 +156,11 @@ export default {
           return false
         }
       })
+
+      if (this.workout == {}){
+        return false
+      }
+
       return true
     }
 
@@ -282,7 +305,7 @@ export default {
 
 .station_name_container{
   position: relative;
-  width: 8%;
+  width: 40%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -294,12 +317,87 @@ export default {
   text-transform: uppercase;
 }
 
+.mate_name{
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.mate_name p{
+  font-size: 130%;
+  color: var(--red);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.comp_name{
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.comp_name p{
+  font-size: 150%;
+  color: var(--yellow);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.comp_name-container{
+  position: relative;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.comp_name-exercise_name{
+  position: relative;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.comp_name-exercise_name p{
+  font-size: 150%;
+  color: var(--yellow);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.comp_name-exercise_reps{
+  position: relative;
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.comp_name-exercise_reps p{
+  font-size: 150%;
+  color: var(--yellow);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
 .station_entry input{
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 500;
   /*width: 15%;*/
   max-height: 6vh;
+  width: 15%;
   background-color: var(--light_gray);
   color: var(--dark_gray);
   text-align: center;
