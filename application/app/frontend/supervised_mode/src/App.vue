@@ -6,6 +6,8 @@
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
+  <Result_component v-if="this.show_results" @close_results="this.close_results" :result="this.result"/>
+
   <Workout_component
     v-if="this.ready_to_go"
     :comp_name="this.comp_name"
@@ -13,10 +15,10 @@
     @finished="this.finished"/>
 
   <p v-if="this.suspended" class="color: var(--red);"> SUSPENDED </p>  
-  <h1 class="station_name">{{ this.station_name.toUpperCase() }}</h1>
-  <h1 class="competitor_name" @change="this.chage_comp_name">{{ this.comp_name }}</h1>
+  <h1 class="station_name" v-if="!this.show_results">{{ this.station_name.toUpperCase() }}</h1>
+  <h1 class="competitor_name" v-if="!this.show_results" @change="this.chage_comp_name">{{ this.comp_name }}</h1>
 
-  <div class="readyicon_container">
+  <div class="readyicon_container" v-if="!this.show_results">
     <img src="./assets/img/check.png" alt="ready_to_go"
     class="readyicon"
     v-if="!this.ready_to_go && this.connected && this.comp_name !== ''"
@@ -31,6 +33,7 @@
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from './components/Spinner_component.vue'
 import Workout_component from './components/Workout_component.vue'
+import Result_component from './components/Result_component.vue'
 import { socket, state } from '@/socket'
 
 export default {
@@ -40,7 +43,8 @@ export default {
   components: {
     Room_selector,
     Spinner_component,
-    Workout_component
+    Workout_component,
+    Result_component,
   },
 
   mounted(){
@@ -130,12 +134,13 @@ export default {
     finished(result){
       console.log(result)
       this.ready_to_go = false
+      this.result = result
+      this.show_results = true
     },
 
     close_results(){
       this.show_results = false
-      this.$refs.wo.result = {}
-      //this.name = ""
+      this.result = {}
       //this._init()
     },
 
@@ -152,6 +157,7 @@ export default {
     station_name: "",
     comp_name: "",
     suspended: false,
+    result: {},
     workout: {},
     ready_to_go: false,
     show_results: false,
