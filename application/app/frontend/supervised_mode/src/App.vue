@@ -138,6 +138,8 @@ export default {
       this.result = result
       this.show_results = true
       //TODO send finish trigger and the results
+      console.log("FINISHED")
+      socket.emit("trigger_finished", {result: this.result})
     },
 
     close_results(){

@@ -36,6 +36,10 @@
           v-if="mate.ready_to_go && !this.running_workout"
           >
 
+          <p class="finish_label">
+            FINISHED
+          </p>
+
         </div>
 
         <div class="station_name_container">
@@ -57,7 +61,7 @@
 
         </div>
 
-        <div class="comp_name-container">
+        <div v-if="!mate.suspended" class="comp_name-container">
 
           <div class="comp_name-exercise_name">
             <p>{{ mate.current_exercise }}</p>
@@ -153,6 +157,16 @@ export default {
       mate.current_weight = data.current_exercise ? data.current_weight : mate.current_weight
       mate.current_reps = data.current_reps ? data.current_reps : 0
       
+    })
+
+    socket.on("accept_finishtrigger", data => {
+      let mate = this.supervised_list.filter( supervised => {
+        return supervised.mate_sid == data.sid
+      })[0]
+
+      mate.finished = true
+      console.log(data)
+
     })
 
   },
@@ -457,6 +471,12 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+}
+
+.finish_label{
+  margin: 0 !important;
+  font-size: 80% !important;
+  color: var(--green);
 }
 
 .checkicon{

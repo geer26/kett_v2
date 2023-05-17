@@ -195,7 +195,10 @@ export default {
           }
 
           const d = {current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps}
-          console.log(d)
+          if (!this.countable_state.includes(this.state)){
+            d.current_weight = 0
+            d.current_reps = 0
+          }
           this.$emit('new_exercise', d)
 
           // Hátralévő idő mutatása

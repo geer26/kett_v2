@@ -168,3 +168,18 @@ def new_exercise(data):
         print('NO ROOM SUPERVISOR')
 
 
+@socket.on('trigger_finished')
+def trigger_finished(data):
+    sid = request.sid
+    data['sid'] = sid
+    room = roomlist.get_room_by_sid(sid)
+    if not room:
+        print('NO ROOM!')
+        return
+    if room.room_supervisor:
+        super_sid = room.room_supervisor.SID
+        socket.emit('accept_finishtrigger', data, to=super_sid)
+    else:
+        print('NO ROOM SUPERVISOR')
+
+
