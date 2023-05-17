@@ -148,16 +148,11 @@ export default {
       let mate = this.supervised_list.filter( supervised => {
         return supervised.mate_sid == data.sid
       })[0]
-      // current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps
-      if(data.current_exercise){
-        mate.current_exercise = data.current_exercise
-      }
-      if(data.current_weight){
-        mate.current_weight = data.current_weight
-      }
-      if(data.current_reps){
-        mate.current_reps = data.current_reps
-      }
+
+      mate.current_exercise = data.current_exercise ? data.current_exercise : mate.current_exercise
+      mate.current_weight = data.current_exercise ? data.current_weight : mate.current_weight
+      mate.current_reps = data.current_reps ? data.current_reps : 0
+      
     })
 
   },
@@ -168,21 +163,28 @@ export default {
     },
 
     all_ready(){
+      let cango = true
+
       if (this.supervised_list.length == 0 || this.running_workout){
-        return false
+        cango = false
       }
 
       this.supervised_list.forEach( supervised => {
-        if ((!supervised.comp_name && !supervised.suspended)){
-          return false
+        if ((supervised.comp_name == "" && !supervised.suspended)){
+          cango = false
         }
+
+        if(!supervised.ready_to_go && !supervised.suspended){
+          cango = false
+        }
+
       })
 
       if (this.workout == {}){
-        return false
+        cango = false
       }
 
-      return true
+      return cango
     }
 
   },

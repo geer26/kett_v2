@@ -76,10 +76,8 @@ export default {
   })
 
   socket.on("send_workout", (data) => {
-    //console.log(data)
     if(this.comp_name !== "" && !this.suspended && this.ready_to_go){
       this.workout = data
-      //TODO start here!
       this.$refs.wo.start_workout(data)
     }
     return
