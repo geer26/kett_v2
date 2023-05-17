@@ -36,7 +36,7 @@
           v-if="mate.ready_to_go && !this.running_workout"
           >
 
-          <p class="finish_label">
+          <p class="finish_label" v-if="mate.finished">
             FINISHED
           </p>
 
