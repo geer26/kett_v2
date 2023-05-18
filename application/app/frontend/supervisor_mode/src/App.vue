@@ -312,6 +312,17 @@ export default {
     },
 
     show_results_init(){
+      this.supervised_list.forEach(supervised => {
+        supervised.comp_name = ""
+        supervised.finished = false
+        supervised.suspended = false
+        supervised.ready_to_go = false
+        supervised.current_exercise = "-"
+        supervised.current_reps = 0
+        supervised.current_time = 0
+        supervised.current_weight = 0
+      })
+      this.running_workout = false
       this.show_results = true
     },
 

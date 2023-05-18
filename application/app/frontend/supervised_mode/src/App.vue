@@ -87,7 +87,7 @@ export default {
   },
 
   computed: {
-    
+
     conn() {
       return state.connected
     },
@@ -140,6 +140,7 @@ export default {
       this.ready_to_go = false
       this.result = result
       this.show_results = true
+      this.suspended = false
       //TODO send finish trigger and the results
       console.log("FINISHED")
       socket.emit("trigger_finished", {result: this.result})
