@@ -3,7 +3,7 @@
         
         <div class="modal glassmorphism_gray">
 
-            <h4 style="margin: 5px;">Station name</h4>
+            <h4 style="margin: 5px;">Platform name</h4>
             <input type="text" v-model="this.station" class="room_input" :disabled="!this.conn">
             <h4 style="margin: 5px;">Event name</h4>
             <input type="text" v-model="this.room" class="room_input" :disabled="!this.conn">

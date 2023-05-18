@@ -6,6 +6,8 @@
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
+  <Results_component v-if="this.show_results" :result="this.all_results" @close_results="this.close_results"/>
+
   <div class="main_container">
 
     <div class="table_label">
@@ -104,6 +106,7 @@
 
 import Room_selector from './components/Room_selector_component.vue'
 import Spinner_component from './components/Spinner_component.vue'
+import Results_component from './components/Results_component.vue'
 import { socket, state } from '@/socket'
 import { workouts } from '@/workouts/built-in'
 
@@ -114,6 +117,7 @@ export default {
   components: {
     Room_selector,
     Spinner_component,
+    Results_component,
   },
 
   mounted(){
@@ -163,8 +167,16 @@ export default {
         return supervised.mate_sid == data.sid
       })[0]
 
+      data.mate_name = mate.mate_name
+
       mate.finished = true
-      console.log(data)
+
+      this.all_results.push(data)
+      this.send_empty_name(mate)
+
+      if(this.all_finished){
+        this.show_results_init()
+      }
 
     })
 
@@ -199,6 +211,16 @@ export default {
 
       return cango
     },
+
+    all_finished(){
+      let finished = true
+      this.supervised_list.forEach(supervised => {
+        if(!supervised.finished && !supervised.suspended){
+          finished = false
+        }
+      })
+      return finished
+    }
 
   },
 
@@ -287,7 +309,15 @@ export default {
       let sec = rem >=9 ? rem : "0" + rem
       if (rem == 9) {sec = "09"}
       return `${hour}:${min}:${sec}`
-    }
+    },
+
+    show_results_init(){
+      this.show_results = true
+    },
+
+    close_results(){
+      this.show_results = false
+    },
 
   },
 
@@ -303,6 +333,8 @@ export default {
     workout: null,
     supervised_list: [],
     running_workout: false,
+    all_results: [],
+    show_results: false,
   }}
 
 }
