@@ -68,6 +68,7 @@ export default {
       current_exercise: "-",
       current_weight: 0,
       current_reps: 0,
+      current_time: this.current_time,
     })
   })
 
@@ -86,9 +87,11 @@ export default {
   },
 
   computed: {
+    
     conn() {
       return state.connected
-    }
+    },
+
   },
 
   methods: {
@@ -172,6 +175,7 @@ export default {
     current_exercise: "-",
     current_weight: 0,
     current_reps: 0,
+    current_time: "00:00:00",
     }
   },
 

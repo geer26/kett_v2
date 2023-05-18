@@ -40,7 +40,7 @@
             FINISHED
           </p>
 
-        </div>
+      </div>
 
         <div class="station_name_container">
 
@@ -64,11 +64,11 @@
         <div v-if="!mate.suspended" class="comp_name-container">
 
           <div class="comp_name-exercise_name">
-            <p>{{ mate.current_exercise }}</p>
+            <p>{{ mate.current_exercise }}/{{ mate.current_weight }}kg</p>
           </div>
 
-          <div class="comp_name-exercise_weight">
-            <p>{{ mate.current_weight }}kg</p>
+          <div class="comp_name-exercise_time">
+            <p>{{ this.time_formatter(mate.current_time) }}</p>
           </div>
 
           <div class="comp_name-exercise_reps">
@@ -94,8 +94,6 @@
       v-if="this.all_ready">
         <a class="btn green_btn" style="width:50%;" @click="this.startevent">START</a>
       </div>
-
-      <div class="timer_container"><p class="red_text">TIME</p></div>
 
     </div>
   </div>
@@ -155,7 +153,8 @@ export default {
 
       mate.current_exercise = data.current_exercise ? data.current_exercise : mate.current_exercise
       mate.current_weight = data.current_exercise ? data.current_weight : mate.current_weight
-      mate.current_reps = data.current_reps ? data.current_reps : 0
+      mate.current_reps = data.current_reps ? data.current_reps : mate.current_reps
+      mate.current_time = data.current_time ? data.current_time : mate.current_time
       
     })
 
@@ -199,7 +198,7 @@ export default {
       }
 
       return cango
-    }
+    },
 
   },
 
@@ -270,6 +269,25 @@ export default {
       this.socket_send(data)
       mate.ready_to_go = false
     },
+
+    time_formatter(time){
+      if (isNaN(time)){
+        return "00:00:00"
+      }
+      let rem = time
+      if (time == 0){
+        return "00:00:00"
+      }
+      let hour = Math.floor(rem/3600) >= 9 ? Math.floor(rem/3600) : "0" + Math.floor(rem/3600) 
+      if (Math.floor(rem/3600) == 9) {hour = "09"}
+      rem = rem%3600
+      let min = Math.floor(rem/60) >=9 ? Math.floor(rem/60) : "0" + Math.floor(rem/60)
+      if (Math.floor(rem/60) == 9) {min = "09"}
+      rem = rem%60
+      let sec = rem >=9 ? rem : "0" + rem
+      if (rem == 9) {sec = "09"}
+      return `${hour}:${min}:${sec}`
+    }
 
   },
 
@@ -363,7 +381,7 @@ export default {
 }
 
 .mate_name p{
-  font-size: 130%;
+  font-size: 120%;
   color: var(--red);
   font-weight: 600;
   margin: 0;
@@ -388,7 +406,7 @@ export default {
 
 .comp_name-container{
   position: relative;
-  width: 50%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -404,7 +422,7 @@ export default {
 }
 
 .comp_name-exercise_name p{
-  font-size: 150%;
+  font-size: 120%;
   color: var(--yellow);
   font-weight: 600;
   margin: 0;
@@ -413,7 +431,7 @@ export default {
 
 .comp_name-exercise_reps{
   position: relative;
-  width: 20%;
+  width: 10%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -421,25 +439,25 @@ export default {
 }
 
 .comp_name-exercise_reps p{
-  font-size: 150%;
+  font-size: 120%;
   color: var(--yellow);
   font-weight: 600;
   margin: 0;
   padding: 0;
 }
 
-.comp_name-exercise_weight{
+.comp_name-exercise_time{
   position: relative;
-  width: 20%;
+  width: 30%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
-.comp_name-exercise_weight{
-  font-size: 150%;
-  color: var(--yellow);
+.comp_name-exercise_time{
+  font-size: 120%;
+  color: var(--red);
   font-weight: 600;
   margin: 0;
   padding: 0;

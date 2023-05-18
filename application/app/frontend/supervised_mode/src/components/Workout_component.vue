@@ -84,6 +84,7 @@
 
 <script>
 
+//import { socket } from '@/socket';
 import Timer_component from './Timer_component.vue'
 
 export default {
@@ -194,21 +195,22 @@ export default {
             this.show_weight_adjust = true
           }
 
-          const d = {current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps}
+          // Hátralévő idő mutatása
+          this.time = exercise.time
+          res.time = this.time
+          res.weight = this.weight
+
+          const d = {current_exercise: this.exercise, current_weight: this.weight, current_reps: this.reps, current_time: this.time}
           if (!this.countable_state.includes(this.state)){
             d.current_weight = 0
             d.current_reps = 0
           }
           this.$emit('new_exercise', d)
 
-          // Hátralévő idő mutatása
-          this.time = exercise.time
-          res.time = this.time
-          res.weight = this.weight
-
           // Indítjuk a visszaszámlálást
           this.timer = setInterval(() => {
             this.time -= 1
+            this.$emit("new_exercise", {current_time: this.time})
               // Ha lejárt az időzítő
               if (this.time < 0) {
                 //!!!SAVE RESULT!!!
