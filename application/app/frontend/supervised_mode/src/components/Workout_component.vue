@@ -123,7 +123,6 @@ export default {
                 ++this.reps
                 const d = {current_reps: this.reps}
                 this.$emit("new_exercise", d)
-                // TODO emit on socket!
                 if (this.max_reps == this.reps && this.countable_state.includes(this.state)){
                     this.maxed = true
                 } else {
@@ -175,7 +174,6 @@ export default {
             this.show_results = true
             this.$emit("finished", this.result)
           } else {
-            // TODO emit on socket
             this.do_exercise(this.index)
           }
         },
@@ -203,14 +201,13 @@ export default {
           const d = {current_exercise: this.exercise, current_weight: this.weight, current_reps: 0, current_time: this.time}
           if (!this.countable_state.includes(this.state)){
             d.current_weight = 0
-            d.current_reps = 0
           }
           this.$emit('new_exercise', d)
 
           // Indítjuk a visszaszámlálást
           this.timer = setInterval(() => {
             this.time -= 1
-            this.$emit("new_exercise", {current_time: this.time, current_reps: 0})
+            this.$emit("new_exercise", {current_time: this.time})
               // Ha lejárt az időzítő
               if (this.time < 0) {
                 //!!!SAVE RESULT!!!

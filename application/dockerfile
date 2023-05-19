@@ -6,4 +6,4 @@ WORKDIR /kett_backend
 COPY requirements.txt /kett_backend
 RUN pip3 install --upgrade pip && pip3 install -r requirements.txt --no-cache-dir
 RUN pip install --upgrade pip wheel setuptools requests
-ENTRYPOINT gunicorn --worker-class gevent -w 4 gkett:app -b 0.0.0.0:5001 --preload --reload
+ENTRYPOINT gunicorn --worker-class gevent -w 1 gkett:app -b 0.0.0.0:5001 --preload --reload

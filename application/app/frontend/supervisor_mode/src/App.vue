@@ -159,6 +159,10 @@ export default {
       mate.current_weight = data.current_exercise ? data.current_weight : mate.current_weight
       mate.current_reps = data.current_reps ? data.current_reps : mate.current_reps
       mate.current_time = data.current_time ? data.current_time : mate.current_time
+
+      if (data.current_exercise !== undefined) {
+        mate.current_reps = 0
+      }
       
     })
 

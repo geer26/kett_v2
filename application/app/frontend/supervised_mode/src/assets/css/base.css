@@ -161,7 +161,7 @@ body{
 
 .green_btn{
     background-color: var(--green);
-    color: var(--dark_gray);
+    color: var(--light_gray);
 }
 
 .red_btn{
