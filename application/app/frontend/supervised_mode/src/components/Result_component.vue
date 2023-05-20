@@ -13,12 +13,18 @@
                     <th>TIME ELAPSED</th>
                     <th>WORKING WEIGHT</th>
                     <th>REPS</th>
+                    <th>SCORE</th>
                 </tr>
                 <tr v-for="res in this.result.results" v-bind:value="{name: res.exercise}" :key="res.exercise">
                     <td>{{ res.exercise }}</td>
                     <td>{{ res.time }}</td>
                     <td>{{ res.weight }}</td>
                     <td>{{ res.reps }}</td>
+                    <td>{{ !isNaN(res.weight) && !isNaN(res.reps) ? (res.weight/8)*res.reps : "0" }}</td>
+                </tr>
+                <tr>
+                    <td>ALL SCORE</td>
+                    <td>{{ this.all_score }}</td>
                 </tr>
             </table>
         </div>
@@ -48,17 +54,42 @@
             result: {},
         },
 
+        computed: {
+            all_score(){
+                let all_score = 0
+                this.result.results.forEach(res => {
+                    let w = Number(res.weight)
+                    let r = Number(res.reps)
+                    let score = !isNaN(w) && !isNaN(r) ? (w/8)*r : "No score available!"
+                    if (!isNaN(score)){
+                        all_score += score
+                    }
+                })
+                return all_score
+            },
+        },
+            
+
         mounted(){
             //this.save_result()
         },
 
         methods: {
             save_result(){
-                let csv_header = 'exercise, time elapsed, working weight, reps\n'
+                let all_score = 0
+                let csv_header = 'exercise, time elapsed, working weight, reps, score\n'
                 this.result.results.forEach( res => {
-                    const row = `${res.exercise},${res.time},${res.weight},${res.reps}\n`
+                    let w = Number(res.weight)
+                    let r = Number(res.reps)
+                    let score = !isNaN(w) && !isNaN(r) ? (w/8)*r : "No score available!"
+                    if (!isNaN(score)){
+                        all_score += score
+                    }
+                    const row = `${res.exercise},${res.time},${res.weight},${res.reps},${score}\n`
                     csv_header += row
                 })
+                let main = `NAME, ${this.result.name}, SCORE, ${all_score}\n`
+                csv_header = main + csv_header
                 
                 let filename = `${this.result.name}.csv`
                 let element = document.createElement('a')

@@ -7,17 +7,21 @@
                     <p>{{ res.mate_name }}</p>
                     <p>:</p>
                     <p style="color: var(--red)">{{ res.result.name }}</p>
+                    <p>:</p>
+                    <p style="font-size: 150%;">{{ this.all_score(res) }}</p>
                 </div>
                 <table>
                     <tr>
                         <th>EXERCISE</th>
-                        <th>WORKING WEIGHT</th>
+                        <th>WEIGHT</th>
                         <th>REPS</th>
+                        <th>SCORE</th>
                     </tr>
                     <tr v-for="r in res.result.results" v-bind:value="{n: r.exercise}" :key="r.exercise">
                         <td>{{ r.exercise }}</td>
                         <td class="centered">{{ r.weight }}kg</td>
                         <td class="centered">{{ r.reps }}</td>
+                        <td class="centered">{{ this.inline_score(r) }}</td>
                     </tr>
                 </table>
             </div>
@@ -47,7 +51,6 @@
         name: 'Results_component',
 
         mounted(){
-            console.log("all results: ", this.result)
         },
 
         props: {
@@ -67,12 +70,29 @@
             save_result(){
                 let csv = ""
                 this.result.forEach(res => {
-                    csv += `${res.mate_name},${res.result.name}\n`
-                    csv += 'exercise, time elapsed, working weight, reps\n'
+                    let all_score = 0
+                    //csv += `${res.mate_name},${res.result.name}\n`
                     res.result.results.forEach(r => {
-                        const row = `${r.exercise},${r.time},${r.weight},${r.reps}\n`
+                        let w = Number(r.weight)
+                        let re = Number(r.reps)
+                        let score = !isNaN(w) && !isNaN(re) ? (w/8)*re : 0
+                        if (!isNaN(score)){
+                        all_score += score
+                        }
+                    })
+                    csv += `${res.mate_name},${res.result.name}, score, ${all_score}\n`
+                    csv += 'exercise, time elapsed, working weight, reps, score\n'
+                    res.result.results.forEach(r => {
+                        let w = Number(r.weight)
+                        let re = Number(r.reps)
+                        let score = !isNaN(w) && !isNaN(re) ? (w/8)*re : 0
+                        if (!isNaN(score)){
+                        all_score += score
+                        }
+                        const row = `${r.exercise},${r.time},${r.weight},${r.reps}, ${score}\n`
                         csv += row
                     })
+                    csv += "\n"
                 })
                 
                 let filename = "kett_result.csv"
@@ -84,6 +104,26 @@
                 element.click()
                 document.body.removeChild(element)
             },
+
+            all_score(result){
+                let all_score = 0                
+                result.result.results.forEach(res => {
+                    let w = Number(res.weight)
+                    let r = Number(res.reps)
+                    let score = (!isNaN(w) && !isNaN(r)) ? (w/8)*r : "No score available!"
+                    if (!isNaN(score)){
+                        all_score += score
+                    }
+                })
+                return all_score
+            },
+
+            inline_score(line){
+                let r = Number(line.reps)
+                let w = Number(line.weight)
+                let score = !isNaN(w) && !isNaN(r) ? (w/8)*r : 0
+                return score
+            }
             
         },
 
@@ -143,9 +183,10 @@
     position: relative;
     display:flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     background-color: var(--light_gray);
+    padding-top: 10px;
 }
 
 .result_names p{
