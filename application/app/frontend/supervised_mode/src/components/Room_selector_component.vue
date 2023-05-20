@@ -101,6 +101,7 @@ methods: {
       current_exercise: "-",
       current_weight: 0,
       current_reps: 0,
+      current_time: 0,
     })
     return
   },
