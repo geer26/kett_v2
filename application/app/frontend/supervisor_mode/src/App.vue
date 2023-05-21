@@ -2,11 +2,28 @@
 
   <Room_selector v-if="!this.connected"
     @connect_to_room="this.connect_to_room"
-    @start_loading="this.startload"/>
+    @start_loading="this.startload"
+    @raise_alert="this.raise_alert"/>
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
-  <Results_component v-if="this.show_results" :result="this.all_results" @close_results="this.close_results"/>
+  <Results_component v-if="this.show_results" :result="this.all_results" @close_results="this.close_results"
+  @raise_alert="this.raise_alert"/>
+
+  <v-snackbar
+    v-model="this.dialog"
+    :timeout="5000"
+    width="auto"
+    >
+    {{ this.dialog_text }}
+    <v-icon
+    @click="this.dialog = false"
+    size="small"
+    color="red-darken-2"
+    icon="fas fa-xmark"
+    >
+    </v-icon>
+  </v-snackbar>
 
   <div class="main_container">
 
@@ -258,7 +275,7 @@ export default {
 
     startevent(){
       if(!this.workout){
-        alert('Select a workout!')
+        this.raise_alert({message: 'Select a workout!'})
         return
       }
       socket.emit("send_workout", this.workout)
@@ -334,6 +351,11 @@ export default {
       this.show_results = false
     },
 
+    raise_alert(data){
+      this.dialog = true
+      this.dialog_text = data.message
+    },
+
   },
 
   data(){return{
@@ -350,6 +372,8 @@ export default {
     running_workout: false,
     all_results: [],
     show_results: false,
+    dialog: false,
+    dialog_text: "",
   }}
 
 }
