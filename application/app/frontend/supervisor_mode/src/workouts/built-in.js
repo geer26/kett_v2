@@ -1,4 +1,4 @@
-/*
+
 const three_mins = {
     name: "3 MINUTES",
     workout : [
@@ -70,7 +70,7 @@ const thirty_mins = {
         },
     ]
 }
-*/
+
 
 const penthathlon = {
     name : "PENTATHLON",
@@ -274,10 +274,10 @@ const test_penta = {
 
 
 export const workouts = [
-    //three_mins,
-    //five_mins,
-    //ten_mins,
-    //thirty_mins,
+    three_mins,
+    five_mins,
+    ten_mins,
+    thirty_mins,
     penthathlon,
     half_penthathlon,
     test_penta,

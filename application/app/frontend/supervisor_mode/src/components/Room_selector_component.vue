@@ -11,7 +11,7 @@
               class="room_input"
               ></v-text-field>
             
-            <div class="room_selection">
+            <div class="room_selection" v-if="this.room !== ''">
                 <p style="color:#F57C00">JOIN</p>
                 <v-switch
                   v-model="this.new_room"
@@ -24,7 +24,7 @@
             <v-btn
               prepend-icon="fas fa-hammer"
               v-ripple
-              v-if="this.new_room"
+              v-if="this.new_room && this.room !== ''"
               @click="this.create_room"
               color="blue-darken-2">
               create
@@ -33,7 +33,7 @@
             <v-btn
               prepend-icon="fas fa-right-to-bracket"
               v-ripple
-              v-if="!this.new_room"
+              v-if="!this.new_room && this.room !== ''"
               @click="this.join_room"
               color="orange-darken-2">
               join

@@ -44,20 +44,30 @@
       >
 
         <div class="station_icon_container">
-        
-          <label class="switch" v-if="!this.running_workout">
-            <input type="checkbox" v-model="mate.suspended"
-            @change="this.send_empty_name(mate)">
-            <span class="slider round"></span>
-          </label>
 
-          <img src="./assets/img/check.png" alt="checked" class="checkicon"
+          <v-switch
+            v-if="!this.running_workout"
+            v-model="mate.suspended"
+            color="red-darken-2"
+            ripple="true"
+            @change="this.send_empty_name(mate)"
+          ></v-switch>
+
+          <v-icon
           v-if="mate.ready_to_go && !this.running_workout"
-          >
+          color="green-darken-2"
+          icon="fas fa-check"
+          size="large"
+          ></v-icon>
 
-          <p class="finish_label" v-if="mate.finished">
-            FINISHED
-          </p>
+          <v-icon
+          v-if="mate.finished"
+          color="green-darken-2"
+          icon="fas fa-square-check"
+          size="large"
+          ></v-icon>
+
+
 
       </div>
 
@@ -68,12 +78,24 @@
           </div>
 
           <div class="comp_name">
+            <!--
             <input type="text"
             style="width: 80%"
             @keyup="send_name($event, mate.mate_sid)"
             v-model="mate.comp_name"
-            v-if="!mate.suspended && !this.running_workout"
+            v-if="!this.running_workout"
             >
+            -->
+
+            <v-text-field
+              v-if="!this.running_workout"
+              style="width: 80%; height: 50% !important; color: var(--dark_gray); font-size: 50% !important;"
+              clearable
+              density="compact"
+              v-model="mate.comp_name"
+              @keyup="send_name($event, mate.mate_sid)"
+              @click:clear="this.send_empty_name(mate)"
+            ></v-text-field>
 
             <p v-if="this.running_workout && mate.comp_name !== ''">{{ mate.comp_name }}</p>
           </div>
@@ -109,9 +131,15 @@
         </select>
       </div>
 
-      <div class="start_button_container"
-      v-if="this.all_ready">
-        <a class="btn green_btn" style="width:50%;" @click="this.startevent">START</a>
+      <div class="start_button_container">
+        <v-btn
+          prepend-icon="fas fa-play"
+          v-ripple
+          @click="this.startevent"
+          color="green-darken-2"
+          v-if="this.all_ready">
+          start
+        </v-btn>
       </div>
 
     </div>
@@ -180,6 +208,8 @@ export default {
       if (data.current_exercise !== undefined) {
         mate.current_reps = 0
       }
+
+      this.running_workout = true
       
     })
 
@@ -452,15 +482,17 @@ export default {
 }
 
 .mate_name p{
-  font-size: 120%;
-  color: var(--red);
+  /*font-size: 120%;*/
+  color: var(--yellow);
   font-weight: 600;
   margin: 0;
   padding: 0;
 }
 
 .comp_name{
+  position: relative;
   width: 70%;
+  max-height: 10%;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -468,7 +500,7 @@ export default {
 }
 
 .comp_name p{
-  font-size: 150%;
+  font-size: 100%;
   color: var(--yellow);
   font-weight: 600;
   margin: 0;
@@ -558,8 +590,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .finish_label{
