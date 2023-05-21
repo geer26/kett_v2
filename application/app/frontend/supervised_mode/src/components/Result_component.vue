@@ -30,16 +30,23 @@
         </div>
 
         <div class="buttons-container">
-            <a 
-            class="btn red_btn"
-            @click="this.$emit('close_results')"
-            >
-                <p>close</p>
-            </a>
 
-            <a class="btn green_btn" @click="this.save_result">
-                <p>save result</p>
-            </a>
+            <v-btn
+              prepend-icon="fas fa-xmark"
+              v-ripple
+              @click="this.$emit('close_results')"
+              color="red-darken-2">
+              close
+            </v-btn>
+
+            <v-btn
+              prepend-icon="fas fa-floppy-disk"
+              v-ripple
+              @click="this.save_result"
+              color="green-darken-2">
+              save
+            </v-btn>
+
         </div>
 
     </div>
@@ -131,7 +138,7 @@
 
     .name_container {
         width: 90%;
-        max-height: 10%;
+        height: 10%;
     }
 
     .results{

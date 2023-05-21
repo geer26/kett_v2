@@ -2,11 +2,27 @@
   <Room_selector v-if="!this.connected"
     @connect_to_room="this.connect_to_room"
     @start_loading="this.startload"
-    @stop_loading="this.endload"/>
+    @stop_loading="this.endload"
+    @raise_alert="this.raise_alert"/>
 
   <Spinner_component v-if="this.loading" class="spinner"/>
 
   <Result_component v-if="this.show_results" @close_results="this.close_results" :result="this.result"/>
+
+  <v-snackbar
+    v-model="this.dialog"
+    :timeout="5000"
+    width="auto"
+    >
+    {{ this.dialog_text }}
+    <v-icon
+    @click="this.dialog = false"
+    size="small"
+    color="red-darken-2"
+    icon="fas fa-xmark"
+    >
+    </v-icon>
+  </v-snackbar>
 
   <Workout_component
     v-if="this.ready_to_go"
@@ -19,12 +35,14 @@
   <h1 class="station_name" v-if="!this.show_results">{{ this.station_name.toUpperCase() }}</h1>
   <h1 class="competitor_name" v-if="!this.show_results" @change="this.chage_comp_name">{{ this.comp_name }}</h1>
 
-  <div class="readyicon_container" v-if="!this.show_results">
-    <img src="./assets/img/check.png" alt="ready_to_go"
-    class="readyicon"
+  <v-btn
+    prepend-icon="fas fa-check"
+    v-ripple
     v-if="!this.ready_to_go && this.connected && this.comp_name !== ''"
-    @click="this.iamready">
-  </div>
+    @click="this.iamready"
+    color="green-darken-2">
+    ready
+  </v-btn>
   
 
 </template>
@@ -141,8 +159,6 @@ export default {
       this.result = result
       this.show_results = true
       this.suspended = false
-      //TODO send finish trigger and the results
-      console.log("FINISHED")
       socket.emit("trigger_finished", {result: this.result})
     },
 
@@ -154,6 +170,11 @@ export default {
 
     new_exercise(data){
       socket.emit("new_exercise", data)
+    },
+
+    raise_alert(data){
+      this.dialog = true
+      this.dialog_text = data.message
     },
 
   },
@@ -177,6 +198,8 @@ export default {
     current_weight: 0,
     current_reps: 0,
     current_time: "00:00:00",
+    dialog: false,
+    dialog_text: ""
     }
   },
 
@@ -196,25 +219,6 @@ export default {
   margin: 0;
   font-size: 20vh;
   color: var(--yellow);
-}
-
-.readyicon_container{
-  position: relative;
-  height: 10%;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.readyicon{
-  position: relative;
-  height: 60%;
-  cursor: pointer;
-  -webkit-filter: drop-shadow(5px 5px 5px #222);
-  filter: drop-shadow(5px 5px 5px #222);
-  transition: .3s ease;
 }
 
 .readyicon:hover{

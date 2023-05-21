@@ -59,7 +59,8 @@ mounted(){
       
       return
     } else {
-      alert(data.message)
+      this.$emit("raise_alert", {message: data.message})
+      //alert(data.message)
     }
 
   })
@@ -84,17 +85,20 @@ methods: {
     //this.$emit("start_loading")
 
     if(!this.conn){
-      alert("Server is unavailable!")
+      //alert("Server is unavailable!")
+      this.$emit("raise_alert", {message: "Server is unavailable!"})
       //this.$emit("stop_loading")
       return
     }
     if (this.station == ""){
-      alert("Station name must be specified!")
+      //alert("Station name must be specified!")
+      this.$emit("raise_alert", {message: "Platform name must be specified!"})
       //this.$emit("stop_loading")
       return
     }
     if(this.room == "") {
-      alert("Event name must be specified!")
+      //alert("Event name must be specified!")
+      this.$emit("raise_alert", {message: "Event name must be specified!"})
       //this.$emit("stop_loading")
       return
     }
