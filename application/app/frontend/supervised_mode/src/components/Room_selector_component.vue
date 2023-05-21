@@ -3,19 +3,27 @@
         
         <div class="modal glassmorphism_gray">
 
-            <h4 style="margin: 5px;">Platform name</h4>
-            <input type="text" v-model="this.station" class="room_input" :disabled="!this.conn">
-            <h4 style="margin: 5px;">Event name</h4>
-            <input type="text" v-model="this.room" class="room_input" :disabled="!this.conn">
-            
-            <a class="btn" :class="{orange_btn : !this.conn, blue_btn : this.conn}" style="width:70%; justify-content: space-around;" @click="this.join_room">
-              
-              <img v-if="this.conn" src="../assets/img/connected.png" alt="" class="connectionimage">
-              <img v-if="!this.conn" src="../assets/img/disconnected.png" alt="" class="connectionimage">
+            <v-text-field
+              clearable
+              label="Platform name"
+              v-model="this.station"
+              :disabled="!this.conn"
+              class="room_input"></v-text-field>
+            <v-text-field
+              clearable
+              label="Event name"
+              v-model="this.room"
+              :disabled="!this.conn"
+              class="room_input"></v-text-field>
 
-              <p v-if="this.conn">join</p>
-              <p v-if="!this.conn">server down</p>
-            </a>
+            <v-btn
+              prepend-icon="fas fa-plug"
+              v-ripple
+              v-if="this.conn"
+              @click="this.join_room"
+              color="blue-darken-2">
+              join
+            </v-btn>
         
         </div>
 
@@ -135,7 +143,7 @@ data(){return{
 
 .modal{
     position: relative;
-    max-width: 30%;
+    width: 20%;
     padding: 10px;
     display:flex;
     flex-direction: column;
@@ -143,15 +151,11 @@ data(){return{
     align-items: center;
 }
 
+
 .room_input {
-        border-radius: 5px;
-        font-size: 1rem;
         font-weight: 500;
         width: 70%;
-        max-height: 6vh;
-        background-color: var(--light_gray);
-        color: var(--dark_gray);
-        text-align: center;
+        color: var(--light_gray);
         margin: 10px;
         padding: 5px;
     }
