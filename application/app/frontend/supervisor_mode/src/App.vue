@@ -261,7 +261,7 @@ export default {
         mate.current_reps = 0
       }
 
-      this.running_workout = true
+      //this.running_workout = true
       
     })
 
