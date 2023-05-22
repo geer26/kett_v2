@@ -16,7 +16,6 @@
                 <v-switch
                   v-model="this.new_room"
                   hide-details
-                  ripple="true"
                 ></v-switch>
                 <p style="color:#1976d2">CREATE</p>
             </div>

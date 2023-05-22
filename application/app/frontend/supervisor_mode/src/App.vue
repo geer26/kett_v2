@@ -49,7 +49,6 @@
             v-if="!this.running_workout"
             v-model="mate.suspended"
             color="red-darken-2"
-            ripple="true"
             @change="this.send_empty_name(mate)"
           ></v-switch>
 
@@ -78,24 +77,13 @@
           </div>
 
           <div class="comp_name">
-            <!--
+            
             <input type="text"
             style="width: 80%"
             @keyup="send_name($event, mate.mate_sid)"
             v-model="mate.comp_name"
             v-if="!this.running_workout"
-            >
-            -->
-
-            <v-text-field
-              v-if="!this.running_workout"
-              style="width: 80%; height: 50% !important; color: var(--dark_gray); font-size: 50% !important;"
-              clearable
-              density="compact"
-              v-model="mate.comp_name"
-              @keyup="send_name($event, mate.mate_sid)"
-              @click:clear="this.send_empty_name(mate)"
-            ></v-text-field>
+            />
 
             <p v-if="this.running_workout && mate.comp_name !== ''">{{ mate.comp_name }}</p>
           </div>
@@ -124,12 +112,73 @@
 
     <div class="control_panel_container">
 
+      
       <div class="select_workout_container"
       v-if="!this.running_workout">
+        <!--
         <select class="select_box" v-model="this.workout">
           <option v-for="wo in this.workouts" :value="{name: wo.name, workout: wo.workout}" :key="wo.name">{{ wo.name }}</option>
         </select>
+        -->
+
+        <p
+          @click="this.show_wo_selector = true"
+          style="cursor: pointer; color: var(--yellow); margin: 0; padding: 0;">
+          {{ this.workout == null ? "SELECT WORKOUT" : this.workout.name }}
+        </p>
+
       </div>
+      
+      <v-dialog
+        v-model="this.show_wo_selector"
+        transition="dialog-bottom-transition"
+        scrollable
+        width="40%"
+      >
+        <v-card
+        v-for="wo in this.workouts" :value="{name: wo.name, workout: wo.workout}" :key="wo.name"
+        variant="outlined"
+        style="margin: 5px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; margin-left: 20px; "
+        >
+          <div style="width: 40%; text-align: left;">
+            <p style="margin: 10px; color: var(--yellow);">{{ wo.name }}</p>
+          </div>
+
+          <div style="width: 40%;">
+            <input
+              list="built_in_exercises"
+              style="background-color: var(--dark_gray); color: var(--yellow); padding: 5px; max-height: 70%; max-width: 100%;"
+              type="text"
+              v-if="wo.name.includes('MINUTE')"
+              v-model="wo.workout[1].exercise"
+              onkeyup="this.value = this.value.toUpperCase();"
+            >
+          </div>
+
+          <datalist id="built_in_exercises">
+            <option value="OAJ"></option>
+            <option value="TAJ"></option>
+            <option value="OALC"></option>
+            <option value="TALC"></option>   
+            <option value="OAS"></option>
+            <option value="TAS"></option>
+            <option value="OAHS"></option>
+            <option value="TAHS"></option>          
+          </datalist>
+
+          <div style="width: 20%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px;">
+            <v-icon
+              @click="this.select_workout(wo)"
+              color="green-darken-2"
+              icon="fas fa-play"
+              size="large"
+            ></v-icon>
+          </div>
+
+        </v-card>
+      </v-dialog>
+
+      
 
       <div class="start_button_container">
         <v-btn
@@ -181,6 +230,9 @@ export default {
         return supervised.mate_sid !== data.mate_sid
       })
       this.sort_superviseds()
+      if(this.supervised_list.length < 1){
+        this.running_workout = false
+      }
     })
 
     socket.on("provide_roomstatus", (data) => {
@@ -303,6 +355,16 @@ export default {
       socket.emit(data.event, data)
     },
 
+    select_workout(wo){
+      this.workout = wo
+      this.workouts.forEach(w => {
+        if(w.name !== wo.name && w.name.includes('MINUT')){
+          w.workout[1].exercise = ""
+        }
+      })
+      this.show_wo_selector = false
+    },
+
     startevent(){
       if(!this.workout){
         this.raise_alert({message: 'Select a workout!'})
@@ -398,6 +460,7 @@ export default {
     state: state,
     workouts: [],
     workout: null,
+    show_wo_selector: false,
     supervised_list: [],
     running_workout: false,
     all_results: [],
@@ -567,17 +630,21 @@ export default {
 }
 
 .station_entry input{
-  border-radius: 5px;
-  font-size: 1rem;
+  font-size: 100%;
   font-weight: 500;
   /*width: 15%;*/
-  max-height: 6vh;
+  max-height: 5vh;
   width: 15%;
-  background-color: var(--light_gray);
-  color: var(--dark_gray);
+  background-color: var(--dark_gray);
+  color: var(--yellow);
   text-align: center;
   margin: 10px;
   padding: 5px;
+  background-color:  rgba( 228,226,226, 0.2); 
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 5px;
+  border: 1px solid rgba( 228,226,226, 0.2); 
 }
 
 .station_entry input:disabled{
@@ -611,70 +678,6 @@ export default {
   margin: 0;
   font-size: 2rem;
   display: inline-block;
-}
-
-.switch {
-  position: relative;
-  display: block;
-  width: 60px;
-  height: 34px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--blu);
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: var(--light_gray);
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: var(--orang);
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
 }
 
 .table_label{
@@ -741,6 +744,18 @@ input:checked + .slider:before {
 
 .connectionimage {
   max-height: 30%;
+}
+
+.wo_selector_container{
+  border: 1px solid var(--light_gray);
+}
+
+.wo_selector_item{
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 20px;
 }
 
 </style>
